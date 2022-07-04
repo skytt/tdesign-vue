@@ -5128,7 +5128,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/date-presets-alt
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default t-is-readonly"><input readonly="readonly" autocomplete="" placeholder="请选择日期" type="text" unselectable="on" value="2022-01-01" class="t-input__inner"></div>
@@ -5146,7 +5146,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/date-presets-alt
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default t-is-readonly"><input readonly="readonly" autocomplete="" placeholder="请选择日期" type="text" unselectable="on" value="2022-01-01 11:11:11" class="t-input__inner"></div>
@@ -5168,7 +5168,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/date-range.vue c
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default"><input autocomplete="" placeholder="请选择日期" type="text" unselectable="off" class="t-input__inner"></div>
@@ -5186,7 +5186,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/date-range.vue c
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default"><input autocomplete="" placeholder="请选择日期" type="text" unselectable="off" class="t-input__inner"></div>
@@ -5282,7 +5282,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/disable-date.vue
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default t-is-readonly"><input readonly="readonly" autocomplete="" placeholder="禁用最近 5 天外的日期" type="text" unselectable="on" class="t-input__inner"></div>
@@ -5334,7 +5334,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/month.vue correc
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default"><input autocomplete="" placeholder="请选择月份" type="text" unselectable="off" class="t-input__inner"></div>
@@ -5366,7 +5366,7 @@ exports[`ssr snapshot test renders ./examples/date-picker/demos/year.vue correct
   <div class="t-space-item">
     <div class="t-date-range-picker">
       <div class="t-range-input-popup">
-        <div class="t-range-input t-range-input-popup">
+        <div class="t-range-input">
           <div class="t-range-input__inner">
             <div class="t-input__wrap t-range-input__inner-left">
               <div class="t-input t-size-m t-is-default"><input autocomplete="" placeholder="请选择年份" type="text" unselectable="off" class="t-input__inner"></div>
@@ -5527,7 +5527,6 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/attach-parent.vue cor
       <div class="t-drawer__mask"></div>
       <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
         <div class="t-drawer__header">抽屉标题</div>
-        <div class="t-drawer__close-btn"></div>
         <div class="t-drawer__body">
           <p>抽屉的内容</p>
         </div>
@@ -5573,9 +5572,7 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/custom.vue correctly 
   <div tabindex="0" class="t-drawer t-drawer--right">
     <div class="t-drawer__mask"></div>
     <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
-      <div class="t-drawer__header">
-        <div>自定义头部</div>
-      </div>
+      <div class="t-drawer__header"></div>
       <div class="t-drawer__close-btn"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-submenu-icon">
           <path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path>
         </svg></div>
@@ -5633,7 +5630,6 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/no-mask.vue correctly
   <div tabindex="0" class="t-drawer t-drawer--right t-drawer--without-mask">
     <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
       <div class="t-drawer__header">抽屉标题</div>
-      <div class="t-drawer__close-btn"></div>
       <div class="t-drawer__body">
         <p>抽屉的内容</p>
       </div>
@@ -5651,7 +5647,6 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/operation.vue correct
     <div class="t-drawer__mask"></div>
     <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
       <div class="t-drawer__header">抽屉标题</div>
-      <div class="t-drawer__close-btn"></div>
       <div class="t-drawer__body">
         <div class="t-drawer-demo-div"><span>标签 A</span>
           <div class="t-input__wrap">
@@ -5683,7 +5678,6 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/placement.vue correct
     <div class="t-drawer__mask"></div>
     <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
       <div class="t-drawer__header">抽屉标题</div>
-      <div class="t-drawer__close-btn"></div>
       <div class="t-drawer__body">
         <p>抽屉的内容</p>
       </div>
@@ -5705,7 +5699,6 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/popup.vue correctly 1
     <div class="t-drawer__mask"></div>
     <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
       <div class="t-drawer__header">抽屉标题</div>
-      <div class="t-drawer__close-btn"></div>
       <div class="t-drawer__body">
         <p>抽屉的内容</p>
       </div>
@@ -5727,7 +5720,6 @@ exports[`ssr snapshot test renders ./examples/drawer/demos/size.vue correctly 1`
     <div class="t-drawer__mask"></div>
     <div class="t-drawer__content-wrapper t-drawer__content-wrapper--right" style="width:300px;height:;">
       <div class="t-drawer__header">抽屉标题</div>
-      <div class="t-drawer__close-btn"></div>
       <div class="t-drawer__body">
         <p>抽屉的内容</p>
       </div>
@@ -10497,7 +10489,7 @@ exports[`ssr snapshot test renders ./examples/pagination/demos/mini.vue correctl
 `;
 
 exports[`ssr snapshot test renders ./examples/pagination/demos/more.vue correctly 1`] = `
-<div>
+<div><span>展示首尾页码省略</span>
   <div class="t-pagination t-size-m">
     <div class="t-pagination__total">共 100 项数据</div>
     <div class="t-select__wrap t-pagination__select">
@@ -10524,6 +10516,29 @@ exports[`ssr snapshot test renders ./examples/pagination/demos/more.vue correctl
           <path fill="currentColor" d="M3 9a1 1 0 110-2 1 1 0 010 2zM7 8a1 1 0 102 0 1 1 0 00-2 0zM12 8a1 1 0 102 0 1 1 0 00-2 0z" fill-opacity="0.9"></path>
         </svg></li>
       <li class="t-pagination__number">20</li>
+    </ul>
+    <div class="t-pagination__btn t-pagination__btn-next"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-right">
+        <path fill="currentColor" d="M6.46 12.46l-.92-.92L9.08 8 5.54 4.46l.92-.92L10.92 8l-4.46 4.46z" fill-opacity="0.9"></path>
+      </svg></div>
+  </div> <span>不展示首尾页码省略</span>
+  <div class="t-pagination t-size-m">
+    <div class="t-pagination__total">共 100 项数据</div>
+    <div class="t-select__wrap t-pagination__select">
+      <div class="t-input__wrap t-select">
+        <div class="t-input t-size-m t-is-default t-is-readonly t-input--auto-width t-input--prefix t-input--suffix">
+          <div class="t-input__prefix"></div><input readonly="readonly" autocomplete="" placeholder="请选择" type="text" unselectable="on" value="5" class="t-input__inner"><span class="t-input__input-pre">5</span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+        </div>
+      </div>
+    </div>
+    <div class="t-pagination__btn t-pagination__btn-prev"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-left">
+        <path fill="currentColor" d="M9.54 3.54l.92.92L6.92 8l3.54 3.54-.92.92L5.08 8l4.46-4.46z" fill-opacity="0.9"></path>
+      </svg></div>
+    <ul class="t-pagination__pager">
+      <li class="t-pagination__number">10</li>
+      <li class="t-pagination__number">11</li>
+      <li class="t-pagination__number t-is-current">12</li>
+      <li class="t-pagination__number">13</li>
+      <li class="t-pagination__number">14</li>
     </ul>
     <div class="t-pagination__btn t-pagination__btn-next"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-right">
         <path fill="currentColor" d="M6.46 12.46l-.92-.92L9.08 8 5.54 4.46l.92-.92L10.92 8l-4.46 4.46z" fill-opacity="0.9"></path>
@@ -11354,7 +11369,7 @@ exports[`ssr snapshot test renders ./examples/range-input/demos/base.vue correct
 
 exports[`ssr snapshot test renders ./examples/range-input/demos/popup.vue correctly 1`] = `
 <div class="t-range-input-popup">
-  <div class="t-range-input t-range-input-popup">
+  <div class="t-range-input">
     <div class="t-range-input__inner">
       <div class="t-input__wrap t-range-input__inner-left">
         <div class="t-input t-size-m t-is-default"><input autocomplete="" placeholder="请输入" type="text" unselectable="off" class="t-input__inner"></div>
@@ -11467,22 +11482,22 @@ exports[`ssr snapshot test renders ./examples/select/demos/collapsed.vue correct
 <div>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark">+1</span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark">+1</span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div> <br><br>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span style="color:#ED7B2F;">+1</span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span style="color:#ED7B2F;">+1</span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div> <br><br>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span> <span style="color:#00A870;">+1</span></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span> <span style="color:#00A870;">+1</span></span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11524,14 +11539,14 @@ exports[`ssr snapshot test renders ./examples/select/demos/custom-selected.vue c
 <div>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一(1)<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项二(2)<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项三(3)<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一(1)<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项二(2)<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项三(3)<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div> <br><br>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
         <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">
         选项四(4)
       <svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">
@@ -11540,7 +11555,7 @@ exports[`ssr snapshot test renders ./examples/select/demos/custom-selected.vue c
         选项六(6)
       <svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">
         选项七(7)
-      <svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11558,8 +11573,8 @@ exports[`ssr snapshot test renders ./examples/select/demos/disabled.vue correctl
   </div>
   <div class="t-select__wrap" style="width:200px;display:inline-block;">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-disabled t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-is-disabled t-tag--disabled">选项一</span><span class="t-tag t-tag--default t-size-m t-tag--dark t-is-disabled t-tag--disabled">选项二</span></div><input disabled="disabled" autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-disabled t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-is-disabled t-tag--disabled">选项一</span><span class="t-tag t-tag--default t-size-m t-tag--dark t-is-disabled t-tag--disabled">选项二</span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11578,7 +11593,7 @@ exports[`ssr snapshot test renders ./examples/select/demos/filterable.vue correc
   <div class="t-select__wrap" style="width:400px;display:inline-block;">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select-input--empty t-select">
       <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"></div><input autocomplete="" placeholder="-请选择-" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+        <div class="t-input__prefix"></div><input autocomplete="" placeholder="-请选择-" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__input-pre">-请选择-</span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11615,8 +11630,8 @@ exports[`ssr snapshot test renders ./examples/select/demos/label-in-value.vue co
   </div>
   <div class="t-select__wrap" style="width:200px;display:inline-block;">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">选项一<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11627,8 +11642,8 @@ exports[`ssr snapshot test renders ./examples/select/demos/max.vue correctly 1`]
 <div>
   <div class="t-select__wrap" style="width:200px;">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select-input--empty t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"></div><input autocomplete="" placeholder="-请选择-" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"></div><input readonly="readonly" autocomplete="" placeholder="-请选择-" type="text" unselectable="on" value="" class="t-input__inner"><span class="t-input__input-pre">-请选择-</span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11639,22 +11654,22 @@ exports[`ssr snapshot test renders ./examples/select/demos/multiple.vue correctl
 <div class="tdesign-demo-select-base">
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">区块链<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">人工智能<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">区块链<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">人工智能<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div> <br><br>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">1<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">2<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">3<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">4<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">5<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">6<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">1<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">2<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">3<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">4<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">5<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">6<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div> <br><br>
   <div class="t-select__wrap">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select">
-      <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">区块链<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">人工智能<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark">+2</span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix t-input--suffix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">区块链<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">人工智能<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark">+2</span></div><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11737,7 +11752,7 @@ exports[`ssr snapshot test renders ./examples/select/demos/remote-search.vue cor
   <div class="t-select__wrap" style="width:400px;display:inline-block;">
     <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple t-select-input--empty t-select">
       <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
-        <div class="t-input__prefix"></div><input autocomplete="" placeholder="请输入搜索" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
+        <div class="t-input__prefix"></div><input autocomplete="" placeholder="请输入搜索" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__input-pre">请输入搜索</span><span class="t-input__suffix t-input__suffix-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="t-fake-arrow t-select__right-icon"><path d="M3.75 5.7998L7.99274 10.0425L12.2361 5.79921" stroke="black" stroke-opacity="0.9" stroke-width="1.3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -11831,8 +11846,8 @@ exports[`ssr snapshot test renders ./examples/select-input/demos/autowidth.vue c
 exports[`ssr snapshot test renders ./examples/select-input/demos/autowidth-multiple.vue correctly 1`] = `
 <div class="tdesign-demo__select-input-borderless-multiple" style="width:100%;">
   <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple">
-    <div class="t-input t-size-m t-is-default t-input--auto-width t-input--prefix t-input--suffix">
-      <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">Vue<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark">+2</span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__input-pre"></span><span class="t-input__suffix t-input__suffix-icon"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-down"><path fill="currentColor" d="M3.54 6.46l.92-.92L8 9.08l3.54-3.54.92.92L8 10.92 3.54 6.46z" fill-opacity="0.9"></path></svg></span>
+    <div class="t-input t-size-m t-is-default t-input--prefix t-input--suffix">
+      <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">Vue<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark">+2</span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__suffix t-input__suffix-icon"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-down"><path fill="currentColor" d="M3.54 6.46l.92-.92L8 9.08l3.54-3.54.92.92L8 10.92 3.54 6.46z" fill-opacity="0.9"></path></svg></span>
     </div>
   </div>
 </div>
@@ -11888,7 +11903,7 @@ exports[`ssr snapshot test renders ./examples/select-input/demos/custom-tag.vue 
     </div>
   </div> <br><br>
   <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple">
-    <div class="t-input t-size-m t-is-default t-input--prefix">
+    <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix">
       <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close"><span class="displaySpan"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-control-platform"><path fill="currentColor" d="M14.5 4.25L8.47.77a.94.94 0 00-.94 0L1.5 4.25v6.96c0 .33.18.64.47.81L8 15.5l6.03-3.48a.94.94 0 00.47-.81V4.25zM8 7.42L3 4.54l5-2.89 5 2.89-5 2.88zm.5.87l5-2.89v5.77l-5 2.89V8.29zm-1 0v5.77l-5-2.89V5.4l5 2.89z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
         tdesign-vue
       </span><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close">
@@ -11897,18 +11912,18 @@ exports[`ssr snapshot test renders ./examples/select-input/demos/custom-tag.vue 
         tdesign-react
       </span><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close">
           <path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path>
-        </svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner">
+        </svg></span></div>
     </div>
   </div> <br><br>
   <div class="t-input__wrap t-tag-input t-tag-input--break-line t-select-input--multiple">
-    <div class="t-input t-size-m t-is-default t-input--prefix">
+    <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix">
       <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close" style="margin-right:4px;"><span class="displaySpan"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-control-platform"><path fill="currentColor" d="M14.5 4.25L8.47.77a.94.94 0 00-.94 0L1.5 4.25v6.96c0 .33.18.64.47.81L8 15.5l6.03-3.48a.94.94 0 00.47-.81V4.25zM8 7.42L3 4.54l5-2.89 5 2.89-5 2.88zm.5.87l5-2.89v5.77l-5 2.89V8.29zm-1 0v5.77l-5-2.89V5.4l5 2.89z" fill-rule="evenodd" clip-rule="evenodd"></path></svg> <span>tdesign-vue</span></span><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close">
           <path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path>
         </svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close" style="margin-right:4px;"><span class="displaySpan"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-control-platform"><path fill="currentColor" d="M14.5 4.25L8.47.77a.94.94 0 00-.94 0L1.5 4.25v6.96c0 .33.18.64.47.81L8 15.5l6.03-3.48a.94.94 0 00.47-.81V4.25zM8 7.42L3 4.54l5-2.89 5 2.89-5 2.88zm.5.87l5-2.89v5.77l-5 2.89V8.29zm-1 0v5.77l-5-2.89V5.4l5 2.89z" fill-rule="evenodd" clip-rule="evenodd"></path></svg> <span>tdesign-react</span></span><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close">
           <path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path>
         </svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close" style="margin-right:4px;"><span class="displaySpan"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-control-platform"><path fill="currentColor" d="M14.5 4.25L8.47.77a.94.94 0 00-.94 0L1.5 4.25v6.96c0 .33.18.64.47.81L8 15.5l6.03-3.48a.94.94 0 00.47-.81V4.25zM8 7.42L3 4.54l5-2.89 5 2.89-5 2.88zm.5.87l5-2.89v5.77l-5 2.89V8.29zm-1 0v5.77l-5-2.89V5.4l5 2.89z" fill-rule="evenodd" clip-rule="evenodd"></path></svg> <span>tdesign-mobile-vue</span></span><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close">
           <path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path>
-        </svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner">
+        </svg></span></div>
     </div>
   </div>
 </div>
@@ -13556,7 +13571,7 @@ exports[`ssr snapshot test renders ./examples/steps/demos/vertical-sequence.vue 
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/base.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--inside">
       <div class="t-swiper__content">
@@ -13569,7 +13584,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/base.vue correctly 1`
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/card.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--inside">
       <div class="t-swiper__content t-swiper-card">
@@ -13582,7 +13597,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/card.vue correctly 1`
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/current.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--inside">
       <div class="t-swiper__content">
@@ -13598,7 +13613,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/current.vue correctly
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/fade.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--inside">
       <div class="t-swiper__content t-swiper-fade">
@@ -13611,7 +13626,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/fade.vue correctly 1`
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/fraction.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--inside">
       <div class="t-swiper__content">
@@ -13634,7 +13649,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/fraction.vue correctl
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/placement.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--outside">
       <div class="t-swiper__content">
@@ -13648,7 +13663,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/placement.vue correct
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/size.vue correctly 1`] = `
 <div>
-  <div class="tdesign-demo-block--swiper-new" style="width:1000px;">
+  <div class="tdesign-demo-block--swiper" style="width:1000px;">
     <h3>large</h3>
     <div class="t-swiper">
       <div class="t-swiper__wrap t-swiper--inside t-swiper--large">
@@ -13674,7 +13689,7 @@ exports[`ssr snapshot test renders ./examples/swiper/demos/size.vue correctly 1`
 `;
 
 exports[`ssr snapshot test renders ./examples/swiper/demos/vertical.vue correctly 1`] = `
-<div class="tdesign-demo-block--swiper-new">
+<div class="tdesign-demo-block--swiper">
   <div class="t-swiper">
     <div class="t-swiper__wrap t-swiper--inside t-swiper--vertical">
       <div class="t-swiper__content">
@@ -17525,7 +17540,7 @@ exports[`ssr snapshot test renders ./examples/table/demos/tree-select.vue correc
           </tr>
           <tr>
             <td class="t-table__expandable-icon-cell"><span class="t-table__expand-box t-table__row--collapsed"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-right-circle"><path fill="currentColor" d="M6.2 5.2L9 8l-2.8 2.8.71.7 3.5-3.5-3.5-3.5-.7.7z" fill-opacity="0.9"></path><path fill="currentColor" d="M8 15A7 7 0 118 1a7 7 0 010 14zm0-1A6 6 0 108 2a6 6 0 000 12z" fill-opacity="0.9"></path></svg></span></td>
-            <td><label class="t-checkbox t-is-disabled"><input type="checkbox" disabled="disabled" class="t-checkbox__former"><span class="t-checkbox__input"></span><span class="t-checkbox__label"></span></label></td>
+            <td><label class="t-checkbox"><input type="checkbox" class="t-checkbox__former"><span class="t-checkbox__input"></span><span class="t-checkbox__label"></span></label></td>
             <td>
               <div class="t-table__tree-col" style="padding-left:1px;"><span class="t-table__tree-op-icon"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-add-rectangle"><path fill="currentColor" d="M7.5 11V8.5H5v-1h2.5V5h1v2.5H11v1H8.5V11h-1z" fill-opacity="0.9"></path><path fill="currentColor" d="M3 14a1 1 0 01-1-1V3a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H3zm0-1h10V3H3v10z" fill-opacity="0.9"></path></svg></span>JQTest1</div>
             </td>
@@ -17549,7 +17564,7 @@ exports[`ssr snapshot test renders ./examples/table/demos/tree-select.vue correc
           </tr>
           <tr>
             <td class="t-table__expandable-icon-cell"><span class="t-table__expand-box t-table__row--collapsed"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-chevron-right-circle"><path fill="currentColor" d="M6.2 5.2L9 8l-2.8 2.8.71.7 3.5-3.5-3.5-3.5-.7.7z" fill-opacity="0.9"></path><path fill="currentColor" d="M8 15A7 7 0 118 1a7 7 0 010 14zm0-1A6 6 0 108 2a6 6 0 000 12z" fill-opacity="0.9"></path></svg></span></td>
-            <td><label class="t-checkbox t-is-disabled"><input type="checkbox" disabled="disabled" class="t-checkbox__former"><span class="t-checkbox__input"></span><span class="t-checkbox__label"></span></label></td>
+            <td><label class="t-checkbox"><input type="checkbox" class="t-checkbox__former"><span class="t-checkbox__input"></span><span class="t-checkbox__label"></span></label></td>
             <td>
               <div class="t-table__tree-col" style="padding-left:1px;"><span class="t-table__tree-op-icon"><svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-add-rectangle"><path fill="currentColor" d="M7.5 11V8.5H5v-1h2.5V5h1v2.5H11v1H8.5V11h-1z" fill-opacity="0.9"></path><path fill="currentColor" d="M3 14a1 1 0 01-1-1V3a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H3zm0-1h10V3H3v10z" fill-opacity="0.9"></path></svg></span>JQTest3</div>
             </td>
@@ -18109,7 +18124,7 @@ exports[`ssr snapshot test renders ./examples/tag/demos/theme.vue correctly 1`] 
 exports[`ssr snapshot test renders ./examples/tag-input/demos/auto-width.vue correctly 1`] = `
 <div class="tdesign-demo-block-column" style="width:80%;">
   <div class="t-input__wrap t-tag-input t-tag-input--break-line">
-    <div class="t-input t-size-m t-is-default t-input--auto-width t-input--prefix">
+    <div class="t-input t-size-m t-is-default t-input--prefix">
       <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">Vue<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span><span class="t-tag t-tag--default t-size-m t-tag--dark t-tag--close">React<svg fill="none" viewBox="0 0 16 16" width="1em" height="1em" class="t-icon t-icon-close t-tag__icon-close"><path fill="currentColor" d="M8 8.92L11.08 12l.92-.92L8.92 8 12 4.92 11.08 4 8 7.08 4.92 4 4 4.92 7.08 8 4 11.08l.92.92L8 8.92z" fill-opacity="0.9"></path></svg></span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner"><span class="t-input__input-pre"></span>
     </div>
   </div>
@@ -18245,8 +18260,8 @@ exports[`ssr snapshot test renders ./examples/tag-input/demos/status.vue correct
   </div>
   <div class="t-tdesign-demo__tag-input"><label>只读状态：</label>
     <div class="t-input__wrap t-tag-input t-tag-input--break-line">
-      <div class="t-input t-size-m t-is-default t-is-readonly t-input--prefix">
-        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark">Vue</span><span class="t-tag t-tag--default t-size-m t-tag--dark">React</span><span class="t-tag t-tag--default t-size-m t-tag--dark">Miniprogram</span></div><input readonly="readonly" autocomplete="" placeholder="" type="text" unselectable="on" value="" class="t-input__inner">
+      <div class="t-input t-size-m t-is-default t-input--prefix">
+        <div class="t-input__prefix"><span class="t-tag t-tag--default t-size-m t-tag--dark">Vue</span><span class="t-tag t-tag--default t-size-m t-tag--dark">React</span><span class="t-tag t-tag--default t-size-m t-tag--dark">Miniprogram</span></div><input autocomplete="" placeholder="" type="text" unselectable="off" value="" class="t-input__inner">
       </div>
       <div class="t-input__tips t-input__tips--default">这是普通文本提示</div>
     </div>
@@ -18498,7 +18513,7 @@ exports[`ssr snapshot test renders ./examples/time-picker/demos/range.vue correc
 <div class="tdesign-demo-block">
   <div class="demos t-time-range-picker">
     <div class="t-range-input-popup">
-      <div class="t-range-input t-range-input-popup">
+      <div class="t-range-input">
         <div class="t-range-input__inner">
           <div class="t-input__wrap t-range-input__inner-left">
             <div class="t-input t-size-m t-is-default"><input autocomplete="" placeholder="选择时间" type="text" unselectable="off" value="00:00:00" class="t-input__inner"></div>

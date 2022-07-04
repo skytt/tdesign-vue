@@ -12,6 +12,7 @@ import { emitEvent } from '../utils/event';
 import { prefix } from '../config';
 import props from './props';
 import { renderTNodeJSX } from '../utils/render-tnode';
+import FormItem from '../form/form-item';
 
 const name = `${prefix}-input`;
 const INPUT_WRAP_CLASS = `${prefix}-input__wrap`;
@@ -29,12 +30,25 @@ function getValidAttrs(obj: object): object {
 
 interface InputInstance extends Vue {
   composing: boolean;
+  tFormItem: InstanceType<typeof FormItem>;
 }
 
 export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input')).extend({
   name: 'TInput',
   inheritAttrs: false,
-  props: { ...props },
+  props: {
+    ...props,
+    showInput: {
+      // 控制透传readonly同时是否展示input 默认保留 因为正常Input需要撑开宽度
+      type: Boolean,
+      default: true,
+    },
+    keepWrapperWidth: {
+      // 控制透传autoWidth之后是否容器宽度也自适应 多选等组件需要用到自适应但也需要保留宽度
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       formDisabled: undefined,
@@ -64,7 +78,7 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
         autofocus: this.autofocus,
         disabled: this.tDisabled,
         readonly: this.readonly,
-        autocomplete: this.autocomplete,
+        autocomplete: this.autocomplete ?? this.global.autocomplete,
         placeholder: this.tPlaceholder,
         maxlength: this.maxlength,
         name: this.name || undefined,
@@ -84,7 +98,7 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
           [`${prefix}-is-disabled`]: this.tDisabled,
           [`${prefix}-is-readonly`]: this.readonly,
           [`${name}--focused`]: this.focused,
-          [`${name}--auto-width`]: this.autoWidth,
+          [`${name}--auto-width`]: this.autoWidth && !this.keepWrapperWidth,
         },
       ];
     },
@@ -94,7 +108,8 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
       handler(val) {
         if (val === true) {
           this.$nextTick(() => {
-            (this.$refs.inputRef as HTMLInputElement).focus();
+            const input = this.$refs.inputRef as HTMLInputElement;
+            input?.focus();
           });
         }
       },
@@ -220,6 +235,7 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
         this.inputValue = this.format(this.value);
       }
       this.focused = false;
+      this.tFormItem?.validate('blur');
       emitEvent<Parameters<TdInputProps['onBlur']>>(this, 'blur', this.value, { e });
     },
     compositionstartHandler(e: CompositionEvent) {
@@ -256,7 +272,7 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
           const stringInfo = getCharacterLength(val, this.maxcharacter);
           val = typeof stringInfo === 'object' && stringInfo.characters;
         }
-        emitEvent<Parameters<TdInputProps['onChange']>>(this, 'change', val, { e });
+        emitEvent<Parameters<TdInputProps['onChange']>>(this, 'change', val, { e } as { e: MouseEvent | InputEvent });
         // 受控，重要，勿删
         this.$nextTick(() => {
           this.setInputValue(this.value);
@@ -278,7 +294,9 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
       const pre = this.$refs.inputPreRef as HTMLSpanElement;
       if (!pre) return;
       const width = pre.offsetWidth;
-      (this.$refs.inputRef as HTMLInputElement).style.width = `${width}px`;
+      if (this.$refs.inputRef) {
+        (this.$refs.inputRef as HTMLInputElement).style.width = `${width}px`;
+      }
     },
   },
 
@@ -338,15 +356,17 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
       >
         {prefixIcon ? <span class={[`${name}__prefix`, `${name}__prefix-icon`]}>{prefixIcon}</span> : null}
         {labelContent}
-        <input
-          {...{ attrs: this.inputAttrs, on: inputEvents }}
-          ref="inputRef"
-          class={`${name}__inner`}
-          value={this.composingRef ? this.composingRefValue : this.inputValue}
-          onInput={this.handleInput}
-          onCompositionstart={this.compositionstartHandler}
-          onCompositionend={this.compositionendHandler}
-        />
+        {this.showInput && (
+          <input
+            {...{ attrs: this.inputAttrs, on: inputEvents }}
+            ref="inputRef"
+            class={`${name}__inner`}
+            value={this.composingRef ? this.composingRefValue : this.inputValue}
+            onInput={this.handleInput}
+            onCompositionstart={this.compositionstartHandler}
+            onCompositionend={this.compositionendHandler}
+          />
+        )}
         {this.autoWidth && (
           <span ref="inputPreRef" class={`${prefix}-input__input-pre`}>
             {this.value || this.tPlaceholder}

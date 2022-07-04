@@ -11,6 +11,7 @@ import TButton from '../button';
 import { useTNodeDefault } from '../hooks/tnode';
 import { PrimaryTableCol, FilterValue } from './type';
 import { useConfig } from '../config-provider/useConfig';
+import log from '../_common/js/log';
 
 type Params = Parameters<CreateElement>;
 type FirstParams = Params[0];
@@ -73,11 +74,11 @@ export default defineComponent({
     const getFilterContent = (h: CreateElement, column: PrimaryTableCol) => {
       const types = ['single', 'multiple', 'input'];
       if (column.type && !types.includes(column.filter.type)) {
-        console.error(`TDesign Table Error: column.filter.type must be the following: ${JSON.stringify(types)}`);
+        log.error('Table', `filter.type must be the following: ${JSON.stringify(types)}`);
         return;
       }
-      if (column?.filter?.component && typeof column?.filter?.component !== 'function') {
-        console.error('TDesign Table Error: column.filter.component must be a function');
+      if (!column.filter.type && !column.filter.component) {
+        log.error('Table', 'both filter.type and filter.component can not be empty.');
         return;
       }
       const component = {
@@ -120,9 +121,9 @@ export default defineComponent({
 
       const renderComponent = () => {
         if (!component) return null;
-        const isVueComponent = component.name === 'VueComponent';
+        const isVueComponent = component.install && component.component;
         if (typeof component === 'function' && !isVueComponent) {
-          return column?.filter?.component((v: FirstParams, b: SecondParams) => {
+          return component((v: FirstParams, b: SecondParams) => {
             const tProps = typeof b === 'object' && 'attrs' in b ? b.attrs : {};
             return h(v, {
               props: { ...filterComponentProps, ...tProps },
