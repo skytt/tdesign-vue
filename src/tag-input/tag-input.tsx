@@ -8,15 +8,12 @@ import { TdTagInputProps } from './type';
 import props from './props';
 import { prefix } from '../config';
 import { renderTNodeJSX } from '../utils/render-tnode';
-import useTagScroll from './useTagScroll';
+import useTagScroll from './hooks/useTagScroll';
 import useTagList from './useTagList';
-import useHover from './useHover';
+import useHover from './hooks/useHover';
 import useDefaultValue from '../hooks/useDefaultValue';
-
-// constants class
-const NAME_CLASS = `${prefix}-tag-input`;
-const CLEAR_CLASS = `${prefix}-tag-input__suffix-clear`;
-const BREAK_LINE_CLASS = `${prefix}-tag-input--break-line`;
+import useDragSorter from './hooks/useDragSorter';
+import { usePrefixClass } from '../config-provider/useConfig';
 
 export default defineComponent({
   name: 'TTagInput',
@@ -27,6 +24,8 @@ export default defineComponent({
     const { inputValue } = toRefs(props);
     const { inputProps } = props;
     const isCompositionRef = ref(false);
+    const COMPONENT_NAME = usePrefixClass('tag-input');
+
     const [tInputValue, setTInputValue] = useDefaultValue(
       inputValue,
       props.defaultInputValue,
@@ -44,18 +43,35 @@ export default defineComponent({
       onMouseenter: props.onMouseenter,
       onMouseleave: props.onMouseleave,
     });
+
+    // 这里不需要响应式，因此直接传递参数
+    const { getDragProps } = useDragSorter(
+      {
+        ...props,
+        sortOnDraggable: props.dragSort,
+        onDragOverCheck: {
+          x: true,
+          targetClassNameRegExp: new RegExp(`^${prefix}-tag`),
+        },
+      },
+      context,
+    );
+
     const {
       scrollToRight, onWheel, scrollToRightOnEnter, scrollToLeftOnLeave, tagInputRef,
     } = useTagScroll(props);
     // handle tag add and remove
     const {
       tagValue, onInnerEnter, onInputBackspaceKeyUp, clearAll, renderLabel, onClose,
-    } = useTagList(props);
+    } = useTagList(
+      props,
+      getDragProps,
+    );
 
     const classes = computed(() => [
-      NAME_CLASS,
+      COMPONENT_NAME.value,
       {
-        [BREAK_LINE_CLASS]: excessTagsDisplayType.value === 'break-line',
+        [`${COMPONENT_NAME.value}--break-line`]: excessTagsDisplayType.value === 'break-line',
       },
     ]);
 
@@ -124,12 +140,13 @@ export default defineComponent({
       classes,
       onInputCompositionstart,
       onInputCompositionend,
+      componentName: COMPONENT_NAME,
     };
   },
 
   render(h) {
     const suffixIconNode = this.showClearIcon ? (
-      <CloseCircleFilledIcon class={CLEAR_CLASS} onClick={this.onClearClick} />
+      <CloseCircleFilledIcon class={`${this.componentName}__suffix-clear`} onClick={this.onClearClick} />
     ) : (
       renderTNodeJSX(this, 'suffixIcon')
     );
@@ -167,6 +184,7 @@ export default defineComponent({
         suffixIcon={() => suffixIconNode}
         {...{
           props: {
+            ...this.inputProps,
             onEnter: this.onInputEnter,
             onKeyup: this.onInputBackspaceKeyUp,
             onMouseenter: (context: { e: MouseEvent }) => {
