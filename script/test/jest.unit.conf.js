@@ -3,9 +3,9 @@ const baseConfig = require('./jest.base.conf.js');
 module.exports = {
   ...baseConfig,
   testEnvironment: 'jsdom',
-  testRegex: 'unit/.*\\.test\\.js$',
+  testMatch: ['<rootDir>/src/**/__tests__/**/*.test.{js,ts,tsx}'],
   // close coverage by default
-  collectCoverage: true,
+  collectCoverage: false,
   coverageDirectory: '<rootDir>/test/unit/coverage',
   collectCoverageFrom: ['src/**/*.{ts,tsx,js,vue}', '!**/node_modules/**'],
   testPathIgnorePatterns: ['/node_modules/', '/src/_common'],

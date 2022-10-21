@@ -1,34 +1,47 @@
 import { CreateElement } from 'vue';
 import isFunction from 'lodash/isFunction';
-import { InfoCircleFilledIcon, CheckCircleFilledIcon, CloseIcon } from 'tdesign-icons-vue';
+import {
+  InfoCircleFilledIcon as TdInfoCircleFilledIcon,
+  CheckCircleFilledIcon as TdCheckCircleFilledIcon,
+  CloseIcon as TdCloseIcon,
+} from 'tdesign-icons-vue';
 import { renderTNodeJSX, renderContent } from '../utils/render-tnode';
 import props from './props';
 import { TNodeReturnValue } from '../common';
-import { getClassPrefixMixins } from '../config-provider/config-receiver';
+import { getClassPrefixMixins, getGlobalIconMixins } from '../config-provider/config-receiver';
 import mixins from '../utils/mixins';
 
 const classPrefixMixins = getClassPrefixMixins('notification');
 
-export default mixins(classPrefixMixins).extend({
+export default mixins(classPrefixMixins, getGlobalIconMixins()).extend({
   name: 'TNotification',
-  components: {
-    InfoCircleFilledIcon,
-    CheckCircleFilledIcon,
-    CloseIcon,
-  },
   props: { ...props },
-  mounted() {
-    if (this.duration > 0) {
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        this.$emit('duration-end');
-        if (this.onDurationEnd) {
-          this.onDurationEnd();
-        }
-      }, this.duration);
-    }
+  data() {
+    return {
+      timer: null,
+    };
+  },
+  created() {
+    this.duration && this.setTimer();
   },
   methods: {
+    setTimer() {
+      if (!this.duration) {
+        return;
+      }
+      this.timer = Number(
+        setTimeout(() => {
+          this.clearTimer();
+          this.$emit('duration-end');
+          if (this.onDurationEnd) {
+            this.onDurationEnd();
+          }
+        }, this.duration),
+      );
+    },
+    clearTimer() {
+      this.duration && clearTimeout(this.timer);
+    },
     close(e?: MouseEvent) {
       this.$emit('close-btn-click', { e });
       if (this.onCloseBtnClick) {
@@ -43,17 +56,24 @@ export default mixins(classPrefixMixins).extend({
       } else if (this.$scopedSlots.icon) {
         icon = this.$scopedSlots.icon(null);
       } else if (this.theme) {
+        const { InfoCircleFilledIcon, CheckCircleFilledIcon } = this.useGlobalIcon({
+          InfoCircleFilledIcon: TdInfoCircleFilledIcon,
+          CheckCircleFilledIcon: TdCheckCircleFilledIcon,
+        });
         const iconType = this.theme === 'success' ? (
-            <check-circle-filled-icon class={`${this.classPrefix}-is-${this.theme}`} />
+            <CheckCircleFilledIcon class={`${this.classPrefix}-is-${this.theme}`} />
         ) : (
-            <info-circle-filled-icon class={`${this.classPrefix}-is-${this.theme}`} />
+            <InfoCircleFilledIcon class={`${this.classPrefix}-is-${this.theme}`} />
         );
         icon = <div class={`${this.componentName}__icon`}>{iconType}</div>;
       }
       return icon;
     },
     renderClose() {
-      const defaultClose = <close-icon />;
+      const { CloseIcon } = this.useGlobalIcon({
+        CloseIcon: TdCloseIcon,
+      });
+      const defaultClose = <CloseIcon />;
       return (
         <span class={`${this.classPrefix}-message__close`} onClick={this.close}>
           {renderTNodeJSX(this, 'closeBtn', defaultClose)}
@@ -72,7 +92,7 @@ export default mixins(classPrefixMixins).extend({
     const title = renderTNodeJSX(this, 'title');
 
     return (
-      <div class={`${this.componentName}`}>
+      <div class={`${this.componentName}`} onMouseenter={this.clearTimer} onMouseleave={this.setTimer}>
         {icon}
         <div class={`${this.componentName}__main`}>
           <div class={`${this.componentName}__title__wrap`}>

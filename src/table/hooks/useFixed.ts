@@ -8,8 +8,10 @@ import {
   computed,
   onBeforeMount,
   ComputedRef,
+  Ref,
 } from '@vue/composition-api';
 import get from 'lodash/get';
+import debounce from 'lodash/debounce';
 import log from '../../_common/js/log';
 import { ClassName, Styles } from '../../common';
 import { BaseTableCol, TableRowData, TdBaseTableProps } from '../type';
@@ -22,6 +24,7 @@ import {
   TableColFixedClasses,
   RecalculateColumnWidthFunc,
 } from '../interface';
+import { getIEVersion } from '../../_common/js/utils/helper';
 
 // 固定列相关类名处理
 export function getColumnFixedStyles(
@@ -82,6 +85,7 @@ export default function useFixed(
   props: TdBaseTableProps,
   context: SetupContext,
   finalColumns: ComputedRef<BaseTableCol<TableRowData>[]>,
+  affixRef: Record<string, Ref>,
 ) {
   const {
     columns,
@@ -98,6 +102,7 @@ export default function useFixed(
     allowResizeColumnWidth,
   } = toRefs(props);
   const data = ref<TableRowData[]>([]);
+  const tableRef = ref<HTMLDivElement>();
   const tableContentRef = ref<HTMLDivElement>();
   const isFixedHeader = ref(false);
   const isWidthOverflow = ref(false);
@@ -302,11 +307,11 @@ export default function useFixed(
   };
 
   let shadowLastScrollLeft: number;
-  const updateColumnFixedShadow = (target: HTMLElement) => {
-    if (!isFixedColumn.value || !target) return;
+  const updateColumnFixedShadow = (target: HTMLElement, extra?: { skipScrollLimit?: boolean }) => {
+    if (!isFixedColumn || !target) return;
     const { scrollLeft } = target;
     // 只有左右滚动，需要更新固定列阴影
-    if (shadowLastScrollLeft === scrollLeft) return;
+    if (shadowLastScrollLeft === scrollLeft && (!extra || !extra.skipScrollLimit)) return;
     shadowLastScrollLeft = scrollLeft;
     const isShowRight = target.clientWidth + scrollLeft < target.scrollWidth;
     showColumnShadow.left = scrollLeft > 0;
@@ -373,6 +378,14 @@ export default function useFixed(
     tableElmWidth.value = elmRect?.width;
   };
 
+  const updateAffixPosition = () => {
+    // 在表格高度变化的时候 需要手动调整affix的位置 因为affix本身无法监听到这些变化触发重新计算
+    affixRef.paginationAffixRef.value?.handleScroll?.();
+    affixRef.horizontalScrollAffixRef.value?.handleScroll?.();
+    affixRef.headerTopAffixRef.value?.handleScroll?.();
+    affixRef.footerBottomAffixRef.value?.handleScroll?.();
+  };
+
   const updateThWidthList = (trList: HTMLCollection | { [colKey: string]: number }) => {
     if (trList instanceof HTMLCollection) {
       if (columnResizable.value) return;
@@ -408,6 +421,10 @@ export default function useFixed(
       updateThWidthList(thead.children);
       clearTimeout(timer);
     }, 0);
+  };
+
+  const resetThWidthList = () => {
+    thWidthList.value = {};
   };
 
   const emitScrollEvent = (e: WheelEvent) => {
@@ -462,6 +479,13 @@ export default function useFixed(
 
   watch([maxHeight, data, columns, bordered], updateFixedHeader, { immediate: true });
 
+  watch(finalColumns, () => {
+    resetThWidthList();
+    if (columnResizable.value) {
+      recalculateColWidth.value(finalColumns.value, thWidthList.value, tableLayout.value, tableElmWidth.value);
+    }
+  });
+
   // 影响表头宽度的元素
   watch(
     [
@@ -475,21 +499,37 @@ export default function useFixed(
       footerAffixedBottom,
       tableContentWidth,
     ],
-    updateThWidthListHandler,
+    () => {
+      updateThWidthListHandler();
+      updateAffixPosition();
+    },
     { immediate: true },
   );
 
-  const refreshTable = () => {
+  const refreshTable = debounce(() => {
     updateTableWidth();
     updateFixedHeader();
     updateThWidthListHandler();
+    updateAffixPosition();
     if (isFixedColumn.value || isFixedHeader.value) {
       updateFixedStatus();
-      updateColumnFixedShadow(tableContentRef.value);
+      updateColumnFixedShadow(tableContentRef.value, { skipScrollLimit: true });
     }
-  };
+  }, 30);
 
   const onResize = refreshTable;
+
+  let resizeObserver: ResizeObserver = null;
+  function addTableResizeObserver(tableElement: HTMLDivElement) {
+    // IE 11 以下使用 window resize；IE 11 以上使用 ResizeObserver
+    if (getIEVersion() < 11 || typeof window.ResizeObserver === 'undefined') return;
+    off(window, 'resize', onResize);
+    resizeObserver = new window.ResizeObserver(() => {
+      refreshTable();
+    });
+    resizeObserver.observe(tableElement);
+    tableRef.value = tableElement;
+  }
 
   onMounted(() => {
     const scrollWidth = getScrollbarWidth();
@@ -501,15 +541,17 @@ export default function useFixed(
       }
       clearTimeout(timer);
     });
-    if (isFixedColumn.value || isFixedHeader.value || !notNeedThWidthList.value) {
+    const isWatchResize = isFixedColumn.value || isFixedHeader.value || !notNeedThWidthList.value || !data.value.length;
+    // IE 11 以下使用 window resize；IE 11 以上使用 ResizeObserver
+    if ((isWatchResize && getIEVersion() < 11) || typeof window.ResizeObserver === 'undefined') {
       on(window, 'resize', onResize);
     }
   });
 
   onBeforeMount(() => {
-    if (isFixedColumn.value || isFixedHeader.value || !notNeedThWidthList.value) {
-      off(window, 'resize', onResize);
-    }
+    off(window, 'resize', onResize);
+    resizeObserver?.unobserve(tableRef.value);
+    resizeObserver?.disconnect();
   });
 
   const setData = (dataSource: TableRowData[]) => {
@@ -537,5 +579,6 @@ export default function useFixed(
     getThWidthList,
     updateThWidthList,
     setRecalculateColWidthFuncRef,
+    addTableResizeObserver,
   };
 }

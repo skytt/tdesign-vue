@@ -1,6 +1,11 @@
 import { defineComponent, computed } from '@vue/composition-api';
+import omit from 'lodash/omit';
 import Panel from './components/Panel';
-import SelectInput, { SelectInputChangeContext, SelectInputFocusContext } from '../select-input';
+import SelectInput, {
+  SelectInputChangeContext,
+  SelectInputFocusContext,
+  SelectInputValueChangeContext,
+} from '../select-input';
 import FakeArrow from '../common-components/fake-arrow';
 import props from './props';
 
@@ -13,6 +18,7 @@ import { InputValue } from '../input';
 import { closeIconClickEffect, handleRemoveTagEffect } from './core/effect';
 import { getPanels, getSingleContent, getMultipleContent } from './core/helper';
 import { getFakeArrowIconClass } from './core/className';
+import useFormDisabled from '../hooks/useFormDisabled';
 
 export default defineComponent({
   name: 'TCascader',
@@ -38,6 +44,9 @@ export default defineComponent({
         || (props.placeholder ?? global.value.placeholder),
     );
 
+    const { formDisabled } = useFormDisabled();
+    const isDisabled = computed(() => formDisabled.value || cascaderContext.value.disabled);
+
     return {
       COMPONENT_NAME,
       overlayClassName,
@@ -45,6 +54,7 @@ export default defineComponent({
       displayValue,
       inputPlaceholder,
       isFilterable,
+      isDisabled,
       STATUS,
       classPrefix,
       cascaderContext,
@@ -60,6 +70,7 @@ export default defineComponent({
       displayValue,
       inputPlaceholder,
       isFilterable,
+      isDisabled,
       STATUS,
       classPrefix,
       cascaderContext,
@@ -67,12 +78,12 @@ export default defineComponent({
       emit,
     } = this;
     const renderSuffixIcon = () => {
-      const { visible, disabled } = cascaderContext;
+      const { visible } = cascaderContext;
       return (
         <FakeArrow
           overlayClassName={getFakeArrowIconClass(classPrefix, STATUS, cascaderContext)}
           isActive={visible}
-          disabled={disabled}
+          disabled={isDisabled}
         />
       );
     };
@@ -94,7 +105,7 @@ export default defineComponent({
             minCollapsedNum: this.minCollapsedNum,
             collapsedItems: this.collapsedItems,
             readonly: this.readonly,
-            disabled: this.disabled,
+            disabled: isDisabled,
             clearable: this.clearable,
             placeholder: inputPlaceholder,
             multiple: this.multiple,
@@ -104,7 +115,7 @@ export default defineComponent({
             suffixIcon: () => renderSuffixIcon(),
             popupProps: {
               ...(this.popupProps as TdCascaderProps['popupProps']),
-              overlayInnerStyle: panels.length ? { width: 'auto' } : '',
+              overlayInnerStyle: panels.length && !this.loading ? { width: 'auto' } : '',
               overlayClassName: [
                 overlayClassName,
                 (this.popupProps as TdCascaderProps['popupProps'])?.overlayClassName,
@@ -113,31 +124,46 @@ export default defineComponent({
             inputProps: { size: this.size, ...(this.inputProps as TdCascaderProps['inputProps']) },
             tagInputProps: { size: this.size, ...(this.tagInputProps as TdCascaderProps['tagInputProps']) },
             tagProps: { ...(this.tagProps as TdCascaderProps['tagProps']) },
-            onInputChange: (value: InputValue) => {
+            onInputChange: (value: InputValue, ctx: SelectInputValueChangeContext) => {
               if (!this.isFilterable) return;
               setInputVal(`${value}`);
+              (this?.selectInputProps as TdSelectInputProps)?.onInputChange?.(value, ctx);
             },
             onTagChange: (val: CascaderValue, ctx: SelectInputChangeContext) => {
+              // 按 enter 键不处理
+              if (ctx.trigger === 'enter') return;
               handleRemoveTagEffect(cascaderContext, ctx.index, this.onRemove);
+              (this?.selectInputProps as TdSelectInputProps)?.onTagChange?.(val, ctx);
+            },
+            onPopupVisibleChange: (val: boolean, context: PopupVisibleChangeContext) => {
+              if (this.disabled) return;
+              setVisible(val, context);
+              (this?.selectInputProps as TdSelectInputProps)?.onPopupVisibleChange?.(val, context);
             },
             onBlur: (val: CascaderValue, context: SelectInputFocusContext) => {
               const ctx = { value: cascaderContext.value, e: context.e };
               this.onBlur?.(ctx);
               emit('blur', ctx);
+              (this?.selectInputProps as TdSelectInputProps)?.onBlur?.(val, context);
             },
             onFocus: (val: CascaderValue, context: SelectInputFocusContext) => {
               const ctx = { value: cascaderContext.value, e: context.e };
               this.onFocus?.(ctx);
               emit('focus', ctx);
+              (this?.selectInputProps as TdSelectInputProps)?.onFocus?.(val, context);
             },
-            onPopupVisibleChange: (val: boolean, context: PopupVisibleChangeContext) => {
-              if (this.disabled) return;
-              setVisible(val, context);
-            },
-            onClear: () => {
+            onClear: (context: { e: MouseEvent }) => {
               closeIconClickEffect(cascaderContext);
+              (this?.selectInputProps as TdSelectInputProps)?.onClear?.(context);
             },
-            ...(this.selectInputProps as TdSelectInputProps),
+            ...omit(this.selectInputProps as TdSelectInputProps, [
+              'onTagChange',
+              'onInputChange',
+              'onPopupVisibleChange',
+              'onBlur',
+              'onFocus',
+              'onClear',
+            ]),
           },
         }}
         scopedSlots={{
@@ -145,8 +171,10 @@ export default defineComponent({
             <Panel
               empty={this.empty}
               trigger={this.trigger}
+              loading={this.loading}
+              loadingText={this.loadingText}
               cascaderContext={cascaderContext}
-              scopedSlots={{ empty: slots.empty }}
+              scopedSlots={{ empty: slots.empty, loadingText: slots.loadingText }}
             />
           ),
           collapsedItems: slots.collapsedItems,

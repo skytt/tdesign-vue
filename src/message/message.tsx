@@ -1,9 +1,9 @@
 import {
-  InfoCircleFilledIcon,
-  CheckCircleFilledIcon,
-  ErrorCircleFilledIcon,
-  HelpCircleFilledIcon,
-  CloseIcon,
+  InfoCircleFilledIcon as TdInfoCircleFilledIcon,
+  CheckCircleFilledIcon as TdCheckCircleFilledIcon,
+  ErrorCircleFilledIcon as TdErrorCircleFilledIcon,
+  HelpCircleFilledIcon as TdHelpCircleFilledIcon,
+  CloseIcon as TdCloseIcon,
 } from 'tdesign-icons-vue';
 import Loading from '../loading';
 import { THEME_LIST } from './const';
@@ -11,22 +11,13 @@ import { renderTNodeJSX, renderContent } from '../utils/render-tnode';
 import props from './props';
 import { ClassName } from '../common';
 import { fadeIn, fadeOut } from './animation';
-import { getClassPrefixMixins } from '../config-provider/config-receiver';
+import { getClassPrefixMixins, getGlobalIconMixins } from '../config-provider/config-receiver';
 import mixins from '../utils/mixins';
 
 const classPrefixMixins = getClassPrefixMixins('message');
 
-export default mixins(classPrefixMixins).extend({
+export default mixins(classPrefixMixins, getGlobalIconMixins()).extend({
   name: 'TMessage',
-
-  components: {
-    InfoCircleFilledIcon,
-    CheckCircleFilledIcon,
-    ErrorCircleFilledIcon,
-    HelpCircleFilledIcon,
-    CloseIcon,
-    Loading,
-  },
 
   props: {
     ...props,
@@ -75,10 +66,10 @@ export default mixins(classPrefixMixins).extend({
           const msgDom = this.$refs.msg as HTMLElement;
           fadeOut(msgDom, this.$props.placement, () => {
             this.$emit('duration-end');
+            this.$emit('close');
           });
-          if (this.onDurationEnd) {
-            this.onDurationEnd();
-          }
+          this.onDurationEnd?.();
+          this.onClose?.({ trigger: 'duration-end' });
         }, this.duration),
       );
     },
@@ -87,12 +78,15 @@ export default mixins(classPrefixMixins).extend({
     },
     close(e?: MouseEvent) {
       this.$emit('close-btn-click', { e });
-      if (this.onCloseBtnClick) {
-        this.onCloseBtnClick({ e });
-      }
+      this.$emit('close');
+      this.onCloseBtnClick?.({ e });
+      this.onClose?.({ trigger: 'close-click', e });
     },
     renderClose() {
-      const defaultClose = <close-icon />;
+      const { CloseIcon } = this.useGlobalIcon({
+        CloseIcon: TdCloseIcon,
+      });
+      const defaultClose = <CloseIcon />;
       return (
         <span class={`${this.componentName}__close`} onClick={this.close}>
           {renderTNodeJSX(this, 'closeBtn', defaultClose)}
@@ -105,6 +99,14 @@ export default mixins(classPrefixMixins).extend({
       if (this.$scopedSlots.icon) {
         return this.$scopedSlots.icon(null);
       }
+      const {
+        InfoCircleFilledIcon, CheckCircleFilledIcon, ErrorCircleFilledIcon, HelpCircleFilledIcon,
+      } = this.useGlobalIcon({
+        InfoCircleFilledIcon: TdInfoCircleFilledIcon,
+        CheckCircleFilledIcon: TdCheckCircleFilledIcon,
+        ErrorCircleFilledIcon: TdErrorCircleFilledIcon,
+        HelpCircleFilledIcon: TdHelpCircleFilledIcon,
+      });
       const component = {
         info: InfoCircleFilledIcon,
         success: CheckCircleFilledIcon,

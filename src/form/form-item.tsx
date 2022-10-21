@@ -4,7 +4,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import lodashGet from 'lodash/get';
 import lodashSet from 'lodash/set';
 import isNil from 'lodash/isNil';
-import { CheckCircleFilledIcon, ErrorCircleFilledIcon, CloseCircleFilledIcon } from 'tdesign-icons-vue';
+import {
+  CheckCircleFilledIcon as TdCheckCircleFilledIcon,
+  CloseCircleFilledIcon as TdCloseCircleFilledIcon,
+  ErrorCircleFilledIcon as TdErrorCircleFilledIcon,
+} from 'tdesign-icons-vue';
 import lodashTemplate from 'lodash/template';
 import { validate } from './form-model';
 import {
@@ -23,13 +27,13 @@ import { AnalysisValidateResult, ErrorListType, SuccessListType } from './const'
 import Form from './form';
 import { ClassName, TNodeReturnValue, Styles } from '../common';
 import mixins from '../utils/mixins';
-import getConfigReceiverMixins, { FormConfig } from '../config-provider/config-receiver';
+import getConfigReceiverMixins, { FormConfig, getGlobalIconMixins } from '../config-provider/config-receiver';
 import log from '../_common/js/log';
 import { renderTNodeJSX } from '../utils/render-tnode';
 
 // type Result = ValidateResult<TdFormProps['data']>;
 
-export type IconConstructor = typeof ErrorCircleFilledIcon;
+export type IconConstructor = typeof TdErrorCircleFilledIcon;
 
 export type FormInstance = InstanceType<typeof Form>;
 
@@ -45,7 +49,7 @@ export interface FormItemConstructor extends Vue {
   form: FormInstance;
 }
 
-export default mixins(getConfigReceiverMixins<FormItemConstructor, FormConfig>('form')).extend({
+export default mixins(getConfigReceiverMixins<FormItemConstructor, FormConfig>('form'), getGlobalIconMixins()).extend({
   name: 'TFormItem',
 
   props: { ...props },
@@ -113,7 +117,7 @@ export default mixins(getConfigReceiverMixins<FormItemConstructor, FormConfig>('
         {
           [`${this.componentName}__label--required`]: this.needRequiredMark,
           [`${this.componentName}__label--colon`]: this.hasColon,
-          [`${this.componentName}__label--top`]: labelAlign === 'top' || !labelWidth,
+          [`${this.componentName}__label--top`]: this.getLabelContent() && (labelAlign === 'top' || !labelWidth),
           [`${this.componentName}__label--left`]: labelAlign === 'left' && labelWidth,
           [`${this.componentName}__label--right`]: labelAlign === 'right' && labelWidth,
         },
@@ -164,12 +168,9 @@ export default mixins(getConfigReceiverMixins<FormItemConstructor, FormConfig>('
       return !!(parent && parent.colon && this.getLabelContent());
     },
     needRequiredMark(): boolean {
-      const { requiredMark } = this.$props;
-      if (typeof requiredMark === 'boolean') return requiredMark;
-      const parent = this.form;
-      const parentRequiredMark = parent?.requiredMark === undefined ? this.global.requiredMark : parent.requiredMark;
+      const requiredMark = this.$props.requiredMark ?? this.form.requiredMark ?? this.global.requiredMark;
       const isRequired = this.innerRules.filter((rule) => rule.required).length > 0;
-      return Boolean(parentRequiredMark && isRequired);
+      return requiredMark || (requiredMark ?? isRequired);
     },
     innerRules(): FormRule[] {
       const parent = this.form;
@@ -357,6 +358,11 @@ export default mixins(getConfigReceiverMixins<FormItemConstructor, FormConfig>('
         </span>
       );
       const list = this.errorList;
+      const { CheckCircleFilledIcon, CloseCircleFilledIcon, ErrorCircleFilledIcon } = this.useGlobalIcon({
+        CheckCircleFilledIcon: TdCheckCircleFilledIcon,
+        CloseCircleFilledIcon: TdCloseCircleFilledIcon,
+        ErrorCircleFilledIcon: TdErrorCircleFilledIcon,
+      });
       if (this.verifyStatus === VALIDATE_STATUS.SUCCESS) {
         return resultIcon(CheckCircleFilledIcon);
       }

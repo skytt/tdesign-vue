@@ -3,7 +3,7 @@ import { useConfig, usePrefixClass } from '../../hooks/useConfig';
 import TPanelContent from './PanelContent';
 import TExtraContent from './ExtraContent';
 import { TdDatePickerProps } from '../type';
-import { getDefaultFormat, parseToDayjs } from '../hooks/useFormat';
+import { getDefaultFormat, parseToDayjs } from '../../_common/js/date-picker/format';
 import useTableData from '../hooks/useTableData';
 import useDisableDate from '../hooks/useDisableDate';
 
@@ -50,11 +50,11 @@ export default defineComponent({
       enableTimePicker: props.enableTimePicker,
     });
 
-    const disableDateOptions = computed(() => useDisableDate({
+    const disableDateOptions = useDisableDate({
       format,
       mode: props.mode,
       disableDate: props.disableDate,
-    }));
+    });
 
     const tableData = computed(() => useTableData({
       year: props.year,
@@ -62,7 +62,7 @@ export default defineComponent({
       mode: props.mode,
       start: props.value ? parseToDayjs(props.value, format).toDate() : undefined,
       firstDayOfWeek: props.firstDayOfWeek || global.value.firstDayOfWeek,
-      ...disableDateOptions.value,
+      ...disableDateOptions,
     }));
 
     const panelContentProps = computed(() => ({

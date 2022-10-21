@@ -7,7 +7,7 @@
 import { AffixProps } from '../affix';
 import { LoadingProps } from '../loading';
 import { PaginationProps, PageInfo } from '../pagination';
-import { PopupProps } from '../popup';
+import { TooltipProps } from '../tooltip';
 import { CheckboxGroupValue } from '../checkbox';
 import { SortableEvent, SortableOptions } from 'sortablejs';
 import { CheckboxProps } from '../checkbox';
@@ -75,12 +75,12 @@ export interface TdBaseTableProps<T extends TableRowData = TableRowData> {
    * 请更为使用 `footerAffixedBottom`。表尾吸底基于 Affix 组件开发，透传全部 Affix 组件属性。
    * @deprecated
    */
-  footerAffixProps?: AffixProps;
+  footerAffixProps?: Partial<AffixProps>;
   /**
    * 表尾吸底。使用此向功能，需要非常注意表格是相对于哪一个父元素进行滚动。值为 `true`，则表示相对于整个窗口吸底。如果表格滚动的父元素不是整个窗口，请通过 `footerAffixedBottom.container` 调整固钉的吸顶范围。基于 Affix 组件开发，透传全部 Affix 组件属性
    * @default false
    */
-  footerAffixedBottom?: boolean | AffixProps;
+  footerAffixedBottom?: boolean | Partial<AffixProps>;
   /**
    * 表尾总结行
    */
@@ -89,12 +89,12 @@ export interface TdBaseTableProps<T extends TableRowData = TableRowData> {
    * 请更为使用 `headerAffixedTop`。表头吸顶基于 Affix 组件开发，透传全部 Affix 组件属性
    * @deprecated
    */
-  headerAffixProps?: AffixProps;
+  headerAffixProps?: Partial<AffixProps>;
   /**
    * 表头吸顶。使用该功能，需要非常注意表格是相对于哪一个父元素进行滚动。值为 `true`，表示相对于整个窗口吸顶。如果表格滚动的父元素不是整个窗口，请通过 `headerAffixedTop.container` 调整吸顶的位置。基于 Affix 组件开发，透传全部 Affix 组件属性。
    * @default false
    */
-  headerAffixedTop?: boolean | AffixProps;
+  headerAffixedTop?: boolean | Partial<AffixProps>;
   /**
    * 表格高度，超出后会出现滚动条。示例：100,  '30%',  '300'。值为数字类型，会自动加上单位 px。如果不是绝对固定表格高度，建议使用 `maxHeight`
    */
@@ -102,7 +102,7 @@ export interface TdBaseTableProps<T extends TableRowData = TableRowData> {
   /**
    * 滚动条吸底。基于 Affix 组件开发，透传全部 Affix 组件属性
    */
-  horizontalScrollAffixedBottom?: boolean | AffixProps;
+  horizontalScrollAffixedBottom?: boolean | Partial<AffixProps>;
   /**
    * 是否显示鼠标悬浮状态
    * @default false
@@ -131,7 +131,7 @@ export interface TdBaseTableProps<T extends TableRowData = TableRowData> {
   /**
    * 分页吸底。基于 Affix 组件开发，透传全部 Affix 组件属性
    */
-  paginationAffixedBottom?: boolean | AffixProps;
+  paginationAffixedBottom?: boolean | Partial<AffixProps>;
   /**
    * 是否允许调整列宽。如果想要配置宽度可调整的最小值和最大值，请使用 `column.resize`，示例：`columns: [{ resize: { minWidth: 120, maxWidth: 300 } }]`
    * @default false
@@ -162,6 +162,11 @@ export interface TdBaseTableProps<T extends TableRowData = TableRowData> {
    * 懒加载和虚拟滚动。为保证组件收益最大化，当数据量小于阈值 `scroll.threshold` 时，无论虚拟滚动的配置是否存在，组件内部都不会开启虚拟滚动，`scroll.threshold` 默认为 `100`
    */
   scroll?: TableScroll;
+  /**
+   * 是否显示表头
+   * @default true
+   */
+  showHeader?: boolean;
   /**
    * 表格尺寸
    * @default medium
@@ -252,7 +257,7 @@ export interface BaseTableCol<T extends TableRowData = TableRowData> {
   /**
    * 透传 HTML 属性到列元素
    */
-  attrs?: object;
+  attrs?: BaseTableColumnAttributes<T>;
   /**
    * 自定义单元格渲染。值类型为 Function 表示以函数形式渲染单元格。值类型为 string 表示使用插槽渲染，插槽名称为 cell 的值。默认使用 colKey 作为插槽名称。优先级高于 render。泛型 T 指表格数据类型
    */
@@ -264,21 +269,33 @@ export interface BaseTableCol<T extends TableRowData = TableRowData> {
   /**
    * 列类名，值类型是 Function 使用返回值作为列类名；值类型不为 Function 时，值用于整列类名（含表头）。泛型 T 指表格数据类型
    */
-  className?: ClassName | ((context: CellData<T>) => ClassName);
+  className?: TableColumnClassName<T> | TableColumnClassName<T>[];
   /**
-   * 渲染列所需字段
+   * 渲染列所需字段，值为 `serial-number` 表示当前列为「序号」列
    * @default ''
    */
   colKey?: string;
   /**
-   * 单元格和表头内容超出时，是否显示省略号。如果仅希望单元格超出省略，可设置 `ellipsisTitle = false`。<br/> 值为 `true`，则浮层默认显示单元格内容；<br/>值类型为 `Function` 则自定义浮层显示内容；<br/>值类型为 `Object`，则自动透传属性到 Popup 组件，可用于调整浮层方向等特性
+   * 单行表头合并列。多行表头请参考「多级表头」文档示例
+   */
+  colspan?: number;
+  /**
+   * 单元格和表头内容超出时，是否显示省略号。如果仅希望单元格超出省略，可设置 `ellipsisTitle = false`。<br/> 值为 `true`，则超出省略浮层默认显示单元格内容；<br/>值类型为 `Function` 则自定义超出省略浮中层显示的内容；<br/>值类型为 `Object`，则自动透传属性到 Tooltip 组件，可用于调整浮层背景色和方向等特性。<br/> 同时透传 Tooltip 属性和自定义浮层内容，请使用 `{ props: { theme: 'light' }, content: () => 'something' }`
    * @default false
    */
-  ellipsis?: boolean | TNode<BaseTableCellParams<T>> | PopupProps;
+  ellipsis?:
+    | boolean
+    | TNode<BaseTableCellParams<T>>
+    | TooltipProps
+    | { props: TooltipProps; content: TNode<BaseTableCellParams<T>> };
   /**
-   * 表头内容超出时，是否显示省略号。优先级高于 `ellipsis`。<br/>值为 `true`，则浮层默认显示表头全部内容；<br/>值类型为 `Function` 则自定义浮层显示表头内容；<br/>值类型为 `Object`，则自动透传属性到 Popup 组件，可用于调整浮层方向等特性
+   * 表头内容超出时，是否显示省略号。优先级高于 `ellipsis`。<br/>值为 `true`，则超出省略的浮层默认显示表头全部内容；<br/>值类型为 `Function` 用于自定义超出省略浮层显示的表头内容；<br/>值类型为 `Object`，则自动透传属性到 Tooltip 组件，则自动透传属性到 Tooltip 组件，可用于调整浮层背景色和方向等特性。<br/> 同时透传 Tooltip 属性和自定义浮层内容，请使用 `{ props: { theme: 'light' }, content: () => 'something' }`
    */
-  ellipsisTitle?: boolean | TNode<BaseTableColParams<T>> | PopupProps;
+  ellipsisTitle?:
+    | boolean
+    | TNode<BaseTableColParams<T>>
+    | TooltipProps
+    | { props: TooltipProps; content: TNode<BaseTableColParams<T>> };
   /**
    * 固定列显示位置
    * @default left
@@ -296,6 +313,11 @@ export interface BaseTableCol<T extends TableRowData = TableRowData> {
    * 自定义表头或单元格，泛型 T 指表格数据类型
    */
   render?: TNode<BaseTableRenderParams<T>>;
+  /**
+   * 是否允许调整当前列列宽
+   * @default true
+   */
+  resizable?: boolean;
   /**
    * 限制拖拽调整的最小宽度和最大宽度。`resize.minWidth` 默认为 `80`，`resize.maxWidth` 默认为 `600`
    */
@@ -342,13 +364,17 @@ export interface TdPrimaryTableProps<T extends TableRowData = TableRowData>
    */
   defaultDisplayColumns?: CheckboxGroupValue;
   /**
-   * 拖拽排序方式，值为 `row` 表示行拖拽排序，这种方式无法进行文本复制，慎用。值为`row-handler` 表示通过专门的 拖拽手柄 进行 行拖拽排序。值为 `col` 表示列顺序拖拽。`drag-col` 已废弃，请勿使用
+   * 拖拽排序方式，值为 `row` 表示行拖拽排序，这种方式无法进行文本复制，慎用。值为`row-handler` 表示通过拖拽手柄进行行拖拽排序。值为 `col` 表示列顺序拖拽。值为 `row-handler-col` 表示同时支持行拖拽和列拖拽。⚠️`drag-col` 已废弃，请勿使用。
    */
-  dragSort?: 'row' | 'row-handler' | 'col' | 'drag-col';
+  dragSort?: 'row' | 'row-handler' | 'col' | 'row-handler-col' | 'drag-col';
   /**
    * 拖拽排序扩展参数，具体参数见 [Sortable](https://github.com/SortableJS/Sortable)
    */
   dragSortOptions?: SortableOptions;
+  /**
+   * 单元格是否允许编辑。返回值为 `true` 则表示可编辑；返回值为 `false` 则表示不可编辑，只读状态
+   */
+  editableCellState?: EditableCellType<T>;
   /**
    * 处于编辑状态的行
    */
@@ -415,6 +441,11 @@ export interface TdPrimaryTableProps<T extends TableRowData = TableRowData>
    * @default []
    */
   defaultSelectedRowKeys?: Array<string | number>;
+  /**
+   * 当前排序列是否显示背景色
+   * @default false
+   */
+  showSortColumnBgColor?: boolean;
   /**
    * 排序控制。sortBy 排序字段；descending 是否进行降序排列。值为数组时，表示正进行多字段排序
    */
@@ -522,7 +553,7 @@ export interface PrimaryTableCol<T extends TableRowData = TableRowData>
    */
   children?: Array<PrimaryTableCol<T>>;
   /**
-   * 渲染列所需字段，必须唯一。值为 `row-select` 表示当前列为行选中操作列。值为 `drag` 表示当前列为拖拽排序操作列
+   * 渲染列所需字段，必须唯一。值为 `row-select` 表示当前列为行选中操作列。值为 `drag` 表示当前列为拖拽排序操作列。值为 `serial-number` 表示当前列为「序号」列
    * @default ''
    */
   colKey?: string;
@@ -604,6 +635,10 @@ export interface EnhancedTableInstanceFunctions<T extends TableRowData = TableRo
    * 树形结构中，用于获取行数据所有信息。泛型 `T` 表示行数据类型
    */
   getData: (key: TableRowValue) => TableRowState<T>;
+  /**
+   * 获取展开的树形节点。`type=unique` 标识获取展开节点的行唯一标识值，`type=data` 表示获取展开节点的数据，`type=all` 表示获取行节点包含展开状态的全部数据
+   */
+  getTreeExpandedRow: (type: 'unique' | 'data' | 'all') => void;
   /**
    * 树形结构中，获取完整的树形结构
    */
@@ -782,9 +817,14 @@ export interface TableEditableCellConfig<T extends TableRowData = TableRowData> 
    */
   component?: ComponentType;
   /**
+   * 单元格默认状态是否为编辑态
+   * @default false
+   */
+  defaultEditable?: boolean;
+  /**
    * 编辑完成后，退出编辑模式时触发
    */
-  onEdited?: (context: { trigger: string; newRowData: T; rowIndex: number }) => void;
+  onEdited?: (context: PrimaryTableOnEditedContext<T>) => void;
   /**
    * 透传给组件 `edit.component` 的属性
    */
@@ -792,7 +832,7 @@ export interface TableEditableCellConfig<T extends TableRowData = TableRowData> 
   /**
    * 校验规则
    */
-  rules?: FormRule[];
+  rules?: TableEditableCellRules<T>;
   /**
    * 是否显示编辑图标
    * @default true
@@ -865,12 +905,16 @@ export interface TableRowData {
   children?: TableRowData[];
 }
 
+export type BaseTableColumnAttributes<T> = { [key: string]: any } | ((context: CellData<T>) => { [key: string]: any });
+
 export interface BaseTableCellParams<T> {
   row: T;
   rowIndex: number;
   col: BaseTableCol<T>;
   colIndex: number;
 }
+
+export type TableColumnClassName<T> = ClassName | ((context: CellData<T>) => ClassName);
 
 export interface CellData<T> extends BaseTableCellParams<T> {
   type: 'th' | 'td';
@@ -893,6 +937,8 @@ export interface TableColumnResizeConfig {
 }
 
 export type DataType = TableRowData;
+
+export type EditableCellType<T> = (params: PrimaryTableCellParams<T>) => boolean;
 
 export interface ExpandArrowRenderParams<T> {
   row: T;
@@ -960,9 +1006,10 @@ export interface DragSortContext<T> {
 
 export interface ExpandOptions<T> {
   expandedRowData: Array<T>;
+  currentRowData: T;
 }
 
-export type PrimaryTableRowEditContext<T> = PrimaryTableCellParams<T> & { value: any };
+export type PrimaryTableRowEditContext<T> = PrimaryTableCellParams<T> & { value: any; editedRow: T };
 
 export type PrimaryTableRowValidateContext<T> = { result: TableRowValidateResult<T>[]; trigger: TableValidateTrigger };
 
@@ -1033,6 +1080,8 @@ export type FilterProps = RadioProps | CheckboxProps | InputProps | { [key: stri
 
 export type FilterType = 'input' | 'single' | 'multiple';
 
+export type PrimaryTableOnEditedContext<T> = PrimaryTableCellParams<T> & { trigger: string; newRowData: T };
+
 export type TableEditableCellProps<T> =
   | TablePlainObject
   | ((params: TableEditableCellPropsParams<T>) => TablePlainObject);
@@ -1044,3 +1093,5 @@ export interface TableEditableCellPropsParams<T> extends PrimaryTableCellParams<
 export interface TablePlainObject {
   [key: string]: any;
 }
+
+export type TableEditableCellRules<T> = FormRule[] | ((params: PrimaryTableCellParams<T>) => FormRule[]);

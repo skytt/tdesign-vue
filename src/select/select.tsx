@@ -12,13 +12,16 @@ import {
 import isFunction from 'lodash/isFunction';
 import debounce from 'lodash/debounce';
 import get from 'lodash/get';
-import { CloseCircleFilledIcon } from 'tdesign-icons-vue';
 import cloneDeep from 'lodash/cloneDeep';
 import isArray from 'lodash/isArray';
+import isObject from 'lodash/isObject';
 import useDefaultValue from '../hooks/useDefaultValue';
+import useVModel from '../hooks/useVModel';
 import { useTNodeJSX } from '../hooks/tnode';
 import { useConfig, usePrefixClass } from '../config-provider/useConfig';
-import { TdSelectProps, SelectValue } from './type';
+import {
+  TdSelectProps, SelectValue, TdOptionProps, SelectOptionGroup,
+} from './type';
 import props from './props';
 import TLoading from '../loading';
 import Popup, { PopupVisibleChangeContext } from '../popup';
@@ -30,10 +33,14 @@ import SelectInput, {
   SelectInputValueChangeContext,
 } from '../select-input';
 import FakeArrow from '../common-components/fake-arrow';
+import { off, on } from '../utils/dom';
 import Option from './option';
 import SelectPanel from './select-panel';
 import { getSingleContent, getMultipleContent, getNewMultipleValue } from './util';
 import useSelectOptions from './hooks/useSelectOptions';
+import { SelectPanelInstance } from './instance';
+import log from '../_common/js/log';
+import useFormDisabled from '../hooks/useFormDisabled';
 
 export type OptionInstance = InstanceType<typeof Option>;
 
@@ -41,7 +48,6 @@ export default defineComponent({
   name: 'TSelect',
   props: { ...props },
   components: {
-    CloseCircleFilledIcon,
     TInput,
     TLoading,
     Tag,
@@ -55,8 +61,9 @@ export default defineComponent({
     const renderTNode = useTNodeJSX();
     const instance = getCurrentInstance();
     const selectInputRef = ref<HTMLElement>(null);
+    const selectPanelRef = ref<SelectPanelInstance>();
     const popupOpenTime = ref(250);
-    const formDisabled = ref();
+    const { formDisabled } = useFormDisabled();
     const COMPONENT_NAME = usePrefixClass('select');
     const { classPrefix } = useConfig('classPrefix');
 
@@ -73,31 +80,69 @@ export default defineComponent({
       inputValue,
       popupVisible,
       minCollapsedNum,
+      creatable,
     } = toRefs(props);
 
     const keys = computed(() => ({
       label: props.keys?.label || 'label',
       value: props.keys?.value || 'value',
     }));
-    const { options: innerOptions, optionsMap, optionsList } = useSelectOptions(props, context, keys);
+    const { options: innerOptions, optionsMap, optionsList } = useSelectOptions(props, instance, keys);
 
-    const [value, setValue] = useDefaultValue(valueProps, props.defaultValue, props.onChange, 'value', 'change');
+    const [value, setValue] = useVModel(valueProps, props.defaultValue, props.onChange, 'change');
     const innerValue = computed(() => {
-      if (valueType.value === 'object') {
-        return multiple.value
-          ? (value.value as SelectValue[]).map((option) => option[keys.value.value])
-          : value.value[keys.value.value];
+      const isObjValue = valueType.value === 'object';
+      let _value = value.value;
+      // 多选场景 value 类型检测与修复
+      if (!multiple.value && isArray(_value)) {
+        log.warn('Select', 'Invalid value for "value" props: got an Array when multiple was set to false');
+        _value = isObjValue ? {} : '';
       }
-      return value.value;
+      if (multiple.value && !isArray(_value)) {
+        log.warn('Select', 'Invalid value for "value" props: expected an Array when multiple was set to true');
+        _value = [];
+      }
+
+      // 若为 object 类型 value，读取其 keys.value 中内容作为组件的 value 值
+      if (isObjValue) {
+        if (multiple.value) {
+          return (_value as SelectValue[])
+            .filter((option) => {
+              const isObj = isObject(option);
+              if (!isObj) {
+                log.warn('Select', `Invalid value for "value" props: expected an Object, but got ${typeof option}`);
+              }
+              return isObj;
+            })
+            .map((option) => option[keys.value.value]);
+        }
+        const isObj = isObject(_value);
+        if (!isObj) {
+          log.warn('Select', `Invalid value for "value" props: expected an Object, but got ${typeof _value}`);
+          return '';
+        }
+        return _value[keys.value.value];
+      }
+      // value 类型的 value 变量，直接返回
+      return _value;
     });
     const setInnerValue: TdSelectProps['onChange'] = (newVal: SelectValue | SelectValue[], e) => {
       if (valueType.value === 'object') {
-        const { value, label } = keys.value;
+        const { value: valueOfKeys, label: labelOfKeys } = keys.value;
+
+        // 若为多选情况，将历史 value 加入 option 待取列表，兼容远程搜索改变 options 数组后旧选项无法找到的问题
+        const oldValueMap = new Map<SelectValue, TdOptionProps>();
+        if (multiple.value) {
+          (value.value as TdOptionProps[]).forEach((option) => {
+            oldValueMap.set(option[valueOfKeys], option);
+          });
+        }
+
         const getOption = (val: SelectValue) => {
-          const option = optionsMap.value.get(val);
+          const option = optionsMap.value.get(val) || oldValueMap.get(val);
           return {
-            [value]: get(option, value),
-            [label]: get(option, label),
+            [valueOfKeys]: get(option, valueOfKeys),
+            [labelOfKeys]: get(option, labelOfKeys),
           };
         };
         // eslint-disable-next-line no-param-reassign
@@ -137,14 +182,26 @@ export default defineComponent({
     );
 
     const placeholderText = computed(
-      () => ((!multiple.value && innerPopupVisible.value && getSingleContent(innerValue.value, optionsList.value))
+      () => ((!multiple.value
+          && innerPopupVisible.value
+          && ((valueType.value === 'object' && (value.value?.[keys.value.label] || innerValue.value))
+            || getSingleContent(innerValue.value, optionsList.value)))
           || placeholder.value)
         ?? t(global.value.placeholder),
     );
 
-    const displayText = computed(() => multiple.value
-      ? getMultipleContent(innerValue.value as SelectValue[], optionsList.value)
-      : getSingleContent(innerValue.value, optionsList.value));
+    const displayText = computed(() => {
+      if (multiple.value) {
+        if (valueType.value === 'object') {
+          return (value.value as SelectValue[]).map((v) => v[keys.value.label]);
+        }
+        return getMultipleContent(innerValue.value as SelectValue[], optionsList.value);
+      }
+      if (valueType.value === 'object') {
+        return value.value?.[keys.value.label] || innerValue.value;
+      }
+      return getSingleContent(innerValue.value, optionsList.value);
+    });
 
     const valueDisplayParams = computed(() => {
       const val = multiple.value
@@ -189,7 +246,8 @@ export default defineComponent({
     const handleCreate = () => {
       if (!tInputValue.value) return;
       const createVal = tInputValue.value;
-      setTInputValue('');
+      // 只有多选情况下需要帮用户清除一次输入框内容，单选场景选中后 popup 消失，携带内容清除的作用
+      multiple.value && setTInputValue('');
       instance.emit('create', createVal);
       props.onCreate?.(createVal);
     };
@@ -234,7 +292,8 @@ export default defineComponent({
     const handleEnter = (value: string, context: { e: KeyboardEvent }) => {
       instance.emit('enter', { value, e: context?.e, inputValue: tInputValue.value });
       props.onEnter?.({ value, e: context?.e, inputValue: tInputValue.value.toString() });
-      handleCreate();
+      // 当支持创建的时候，按下 enter 键，若 hoverIndex 大于 0，则视为选择列表中筛选出的已有项目，只有当 hoverIndex 为 -1(未选中)/0(创建条目) 的时候，才视为触发 create 回调
+      creatable.value && hoverIndex.value < 1 && handleCreate();
     };
 
     const debounceSearch = debounce(() => {
@@ -248,7 +307,7 @@ export default defineComponent({
         const popupRefs = (context.refs.selectInputRef as any).$refs.selectInputRef.$refs;
         r = popupRefs.overlay || popupRefs.component.$refs.overlay;
       } catch (e) {
-        console.warn('TDesign Warn:', e);
+        log.warn('Select', e);
       }
       return r;
     };
@@ -278,38 +337,51 @@ export default defineComponent({
     // 键盘操作逻辑相关
     const hoverIndex = ref(-1);
     const keydownEvent = (e: KeyboardEvent) => {
-      const optionsListLength = optionsList.value.length;
+      const displayOptions: (TdOptionProps & { isCreated?: boolean })[] = [];
+
+      const getCurrentOptionsList = (options: TdOptionProps[]) => {
+        options.forEach((option) => {
+          if ((option as SelectOptionGroup).group) {
+            getCurrentOptionsList((option as SelectOptionGroup).children);
+          } else {
+            displayOptions.push(option);
+          }
+        });
+      };
+      getCurrentOptionsList(selectPanelRef.value?.getDisplayOptions());
+
+      const displayOptionsLength = displayOptions.length;
       const arrowDownOption = () => {
         let count = 0;
-        while (hoverIndex.value < optionsListLength) {
-          if (!optionsList.value[hoverIndex.value]?.disabled) {
+        while (hoverIndex.value < displayOptionsLength) {
+          if (!(displayOptions[hoverIndex.value] as TdOptionProps)?.disabled) {
             break;
           }
-          if (hoverIndex.value === optionsListLength - 1) {
+          if (hoverIndex.value === displayOptionsLength - 1) {
             hoverIndex.value = 0;
           } else {
             hoverIndex.value += 1;
           }
           count += 1;
-          if (count >= optionsListLength) break;
+          if (count >= displayOptionsLength) break;
         }
       };
       const arrowUpOption = () => {
         let count = 0;
         while (hoverIndex.value > -1) {
-          if (!optionsList.value[hoverIndex.value]?.disabled) {
+          if (!(displayOptions[hoverIndex.value] as TdOptionProps)?.disabled) {
             break;
           }
           if (hoverIndex.value === 0) {
-            hoverIndex.value = optionsListLength - 1;
+            hoverIndex.value = displayOptionsLength - 1;
           } else {
             hoverIndex.value -= 1;
           }
           count += 1;
-          if (count >= optionsListLength) break;
+          if (count >= displayOptionsLength) break;
         }
       };
-      if (optionsListLength === 0) return;
+      if (displayOptionsLength === 0) return;
       const preventKeys = ['ArrowDown', 'ArrowUp', 'Enter', 'Escape', 'Tab'];
       if (preventKeys.includes(e.code)) {
         e.preventDefault();
@@ -320,7 +392,7 @@ export default defineComponent({
             hoverIndex.value = 0;
             return;
           }
-          if (hoverIndex.value < optionsListLength - 1) {
+          if (hoverIndex.value < displayOptionsLength - 1) {
             hoverIndex.value += 1;
             arrowDownOption();
           } else {
@@ -337,21 +409,24 @@ export default defineComponent({
             hoverIndex.value -= 1;
             arrowUpOption();
           } else {
-            hoverIndex.value = optionsListLength - 1;
+            hoverIndex.value = displayOptionsLength - 1;
             arrowUpOption();
           }
           break;
         case 'Enter':
           if (hoverIndex.value === -1) return;
+          if (displayOptions[hoverIndex.value].isCreated && multiple.value) {
+            handleCreate();
+          }
           if (!multiple.value) {
-            setInnerValue(optionsList.value[hoverIndex.value].value, {
+            setInnerValue((displayOptions[hoverIndex.value] as TdOptionProps).value, {
               e,
               trigger: 'check',
             });
             setInnerPopupVisible(false, { e });
           } else {
             if (hoverIndex.value === -1) return;
-            const optionValue = optionsList.value[hoverIndex.value]?.value;
+            const optionValue = (displayOptions[hoverIndex.value] as TdOptionProps)?.value;
             if (!optionValue) return;
             const newValue = getNewMultipleValue(innerValue.value, optionValue);
             setInnerValue(newValue.value, { e, trigger: newValue.isCheck ? 'check' : 'uncheck' });
@@ -365,31 +440,12 @@ export default defineComponent({
       }
     };
 
-    const checkValueInvalid = () => {
-      // 参数类型检测与修复
-      if (!multiple.value && isArray(value.value)) {
-        value.value = '';
-      }
-      if (multiple.value && !isArray(value.value)) {
-        value.value = [];
-      }
-    };
-
-    watch(
-      value,
-      () => {
-        checkValueInvalid();
-      },
-      {
-        immediate: true,
-      },
-    );
     // 为 eventListener 加单独的 sync watch，以防组件在卸载的时候未能正常清除监听 (https://github.com/Tencent/tdesign-vue/issues/1170)
     watch(
       innerPopupVisible,
       (val) => {
-        val && document.addEventListener('keydown', keydownEvent);
-        !val && document.removeEventListener('keydown', keydownEvent);
+        val && on(document, 'keydown', keydownEvent);
+        !val && off(document, 'keydown', keydownEvent);
       },
       {
         flush: 'sync',
@@ -427,6 +483,7 @@ export default defineComponent({
       innerOptions,
       placeholderText,
       selectInputRef,
+      selectPanelRef,
       innerPopupVisible,
       displayText,
       tInputValue,
@@ -524,6 +581,7 @@ export default defineComponent({
           updateScrollTop={this.updateScrollTop}
         >
           <select-panel
+            ref="selectPanelRef"
             slot="panel"
             scopedSlots={this.$scopedSlots}
             size={this.size}

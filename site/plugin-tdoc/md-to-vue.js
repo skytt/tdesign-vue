@@ -151,9 +151,6 @@ function customRender({ source, file, md }) {
   // split md
   let [demoMd = '', apiMd = ''] = content.split(pageData.apiFlag);
 
-  // fix table | render error
-  apiMd = apiMd.replace(/`[^`]+?`/g, (str) => str.replace(/\|/g, '\\|'));
-
   const mdSegment = {
     ...pageData,
     componentName,
@@ -169,7 +166,7 @@ function customRender({ source, file, md }) {
     const usageObj = compileUsage({
       componentName,
       usage: pageData.usage,
-      demoPath: path.posix.resolve(__dirname, `../../examples/${componentName}/usage/index.vue`),
+      demoPath: path.posix.resolve(__dirname, `../../src/${componentName}/_usage/index.vue`),
     });
     if (usageObj) {
       mdSegment.usage = usageObj;

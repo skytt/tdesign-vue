@@ -82,7 +82,7 @@ export default defineComponent({
     } = props.scroll || {};
 
     const displayOptions = computed(() => {
-      if (!inputValue.value || props.creatable || !(props.filterable || isFunction(props.filter))) return options.value;
+      if (!inputValue.value || !(props.filterable || isFunction(props.filter))) return options.value;
 
       const filterMethods = (option: SelectOption) => {
         if (isFunction(props.filter)) {
@@ -91,24 +91,39 @@ export default defineComponent({
         return option.label?.indexOf(`${props.inputValue}`) > -1;
       };
 
-      const res: SelectOption[] = [];
+      const res: Array<SelectOption & { index?: number }> = [];
+      // 动态赋予选项 index 的计数：默认从 0 开始累加，当含有用户创建条目的时候，创建条目 index 为 0，正常条目下标从 1 开始累加
+      let groupIndex = isCreateOptionShown.value ? 1 : 0;
       props.options.forEach((option) => {
         if ((option as SelectOptionGroup).group && (option as SelectOptionGroup).children) {
           res.push({
             ...option,
-            children: (option as SelectOptionGroup).children.filter(filterMethods),
+            // 处理index使其在过滤后的分组中能正确触发上下移动键的hover效果
+            children: (option as SelectOptionGroup).children.filter(filterMethods).reduce((pre, cur) => {
+              pre.push({ ...cur, index: groupIndex });
+              groupIndex += 1;
+              return pre;
+            }, []),
           });
         }
         if (filterMethods(option)) {
-          res.push(option);
+          res.push({ ...option, index: groupIndex + res.length });
         }
       });
 
       return res;
     });
+    const getDisplayOptions = () => {
+      const arr: (SelectOption & { isCreated?: boolean })[] = [];
+      if (isCreateOptionShown.value) {
+        arr.push({ label: String(inputValue.value), value: String(inputValue.value), isCreated: true } as SelectOption);
+      }
+      arr.push(...displayOptions.value);
+      return arr;
+    };
 
-    const isCreateOptionShown = computed(() => props.creatable && props.filterable && props.inputValue);
-    const isEmpty = computed(() => !displayOptions.value.length);
+    const isCreateOptionShown = computed(() => !!(props.creatable && props.filterable && props.inputValue));
+    const isEmpty = computed(() => !(displayOptions.value.length > 0));
     const isVirtual = computed(
       () => props.scroll?.type === 'virtual' && props.options?.length > (props.scroll?.threshold || 100),
     );
@@ -179,6 +194,7 @@ export default defineComponent({
       bufferSize,
       threshold,
       displayOptions,
+      getDisplayOptions,
       componentName: COMPONENT_NAME,
     };
   },
@@ -211,6 +227,7 @@ export default defineComponent({
       return (
         <ul class={[`${this.componentName}__create-option`, `${this.componentName}__list`]}>
           <t-option
+            index={0}
             isCreatedOption={true}
             value={inputValue}
             label={inputValue}
@@ -297,10 +314,10 @@ export default defineComponent({
           style={innerStyle}
         >
           {renderTNode('panelTopContent')}
-          {isEmpty && this.renderEmptyContent()}
           {isCreateOptionShown && this.renderCreateOption()}
-          {!isEmpty && loading && this.renderLoadingContent()}
-          {!isEmpty && !loading && this.renderOptionsContent(isVirtual && visibleData ? visibleData : displayOptions)}
+          {loading && this.renderLoadingContent()}
+          {!loading && isEmpty && !isCreateOptionShown && this.renderEmptyContent()}
+          {!loading && !isEmpty && this.renderOptionsContent(isVirtual && visibleData ? visibleData : displayOptions)}
           {renderTNode('panelBottomContent')}
         </div>
       );

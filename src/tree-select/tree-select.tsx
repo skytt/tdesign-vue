@@ -8,10 +8,10 @@ import isBoolean from 'lodash/isBoolean';
 import isObject from 'lodash/isObject';
 import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
-import { CloseCircleFilledIcon } from 'tdesign-icons-vue';
+import { CloseCircleFilledIcon as TdCloseCircleFilledIcon } from 'tdesign-icons-vue';
 import Loading from '../loading';
 import mixins from '../utils/mixins';
-import getConfigReceiverMixins, { TreeSelectConfig } from '../config-provider/config-receiver';
+import getConfigReceiverMixins, { TreeSelectConfig, getGlobalIconMixins } from '../config-provider/config-receiver';
 import { renderTNodeJSX } from '../utils/render-tnode';
 import { emitEvent } from '../utils/event';
 import Popup, { PopupProps } from '../popup';
@@ -25,7 +25,7 @@ import { ClassName, TreeOptionData } from '../common';
 import { RemoveOptions, NodeOptions } from './interface';
 import { TreeInstanceFunctions } from '../tree/type';
 
-export default mixins(getConfigReceiverMixins<Vue, TreeSelectConfig>('treeSelect')).extend({
+export default mixins(getConfigReceiverMixins<Vue, TreeSelectConfig>('treeSelect'), getGlobalIconMixins()).extend({
   name: 'TTreeSelect',
   model: {
     prop: 'value',
@@ -87,6 +87,14 @@ export default mixins(getConfigReceiverMixins<Vue, TreeSelectConfig>('treeSelect
     popupClass(): ClassName {
       const { popupObject } = this;
       return `${popupObject.overlayClassName} ${this.classPrefix}-select__dropdown narrow-scrollbar`;
+    },
+    dropdownInnerSize(): ClassName {
+      const sizeMap = {
+        small: 's',
+        medium: 'm',
+        large: 'l',
+      };
+      return sizeMap[this.size];
     },
     isObjectValue(): boolean {
       return this.valueType === 'object';
@@ -175,7 +183,7 @@ export default mixins(getConfigReceiverMixins<Vue, TreeSelectConfig>('treeSelect
       }
       const single = this.selectedSingle instanceof Array ? this.selectedSingle[0] : this.selectedSingle;
       if (!this.multiple && single) {
-        return single;
+        return String(single); // placeholder is string type
       }
       return this.placeholder;
     },
@@ -403,6 +411,10 @@ export default mixins(getConfigReceiverMixins<Vue, TreeSelectConfig>('treeSelect
       treeProps, popupObject, classes, popupClass, treeKey,
     } = this;
     const iconStyle = { 'font-size': this.size };
+    const { CloseCircleFilledIcon } = this.useGlobalIcon({
+      CloseCircleFilledIcon: TdCloseCircleFilledIcon,
+    });
+
     const treeItem = (
       <Tree
         ref="tree"
@@ -544,7 +556,13 @@ export default mixins(getConfigReceiverMixins<Vue, TreeSelectConfig>('treeSelect
               size="small"
             />
           </div>
-          <div slot="content">
+          <div
+            slot="content"
+            class={[
+              `${this.classPrefix}-select__dropdown-inner`,
+              `${this.classPrefix}-select__dropdown-inner--size-${this.dropdownInnerSize}`,
+            ]}
+          >
             <p
               v-show={this.showLoading}
               class={`${this.classPrefix}-select__loading-tips ${this.classPrefix}-select__right-icon-polyfill`}

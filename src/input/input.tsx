@@ -1,10 +1,15 @@
 import Vue, { CreateElement, VNode } from 'vue';
-import { BrowseIcon, BrowseOffIcon, CloseCircleFilledIcon } from 'tdesign-icons-vue';
+import {
+  BrowseIcon as TdBrowseIcon,
+  BrowseOffIcon as TdBrowseOffIcon,
+  CloseCircleFilledIcon as TdCloseCircleFilledIcon,
+} from 'tdesign-icons-vue';
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
+import { limitUnicodeMaxLength } from '../_common/js/utils/helper';
 import { InputValue, TdInputProps } from './type';
 import { getCharacterLength, omit } from '../utils/helper';
-import getConfigReceiverMixins, { InputConfig } from '../config-provider/config-receiver';
+import getConfigReceiverMixins, { InputConfig, getGlobalIconMixins } from '../config-provider/config-receiver';
 import mixins from '../utils/mixins';
 import { ClassName } from '../common';
 import { emitEvent } from '../utils/event';
@@ -27,7 +32,7 @@ interface InputInstance extends Vue {
   tFormItem: InstanceType<typeof FormItem>;
 }
 
-export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input')).extend({
+export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input'), getGlobalIconMixins()).extend({
   name: 'TInput',
   inheritAttrs: false,
   props: {
@@ -42,6 +47,9 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
       type: Boolean,
       default: false,
     },
+  },
+  inject: {
+    tFormItem: { default: undefined },
   },
   data() {
     return {
@@ -74,7 +82,6 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
         readonly: this.readonly,
         autocomplete: this.autocomplete ?? this.global.autocomplete,
         placeholder: this.tPlaceholder,
-        maxlength: this.maxlength,
         name: this.name || undefined,
         type: this.renderType,
         unselectable: this.readonly ? 'on' : 'off',
@@ -96,6 +103,15 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
         },
       ];
     },
+    inputWrapClass(): ClassName {
+      const wrapClass = `${this.componentName}__wrap`;
+      return [
+        `${wrapClass}`,
+        {
+          [`${wrapClass}--focused`]: this.focused,
+        },
+      ];
+    },
   },
   watch: {
     autofocus: {
@@ -111,7 +127,7 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
     },
     value: {
       handler(val) {
-        this.inputValue = val;
+        this.inputValue = this.format ? this.format(val) : val;
       },
       immediate: true,
     },
@@ -145,7 +161,11 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
     mouseEvent(v: boolean) {
       this.isHover = v;
     },
-    renderIcon(h: CreateElement, icon: string | Function | undefined, iconType: 'prefix-icon' | 'suffix-icon') {
+    renderIcon(
+      h: CreateElement,
+      icon: string | Function | undefined,
+      iconType: 'prefix-icon' | 'suffix-icon' | 'password-icon',
+    ) {
       if (typeof icon === 'function') {
         return icon(h);
       }
@@ -169,13 +189,11 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
         input.value = sV;
       }
     },
-    focus(): void {
-      const input = this.$refs.inputRef as HTMLInputElement;
-      input?.focus();
+    focus() {
+      (this.$refs.inputRef as HTMLInputElement).focus();
     },
-    blur(): void {
-      const input = this.$refs.inputRef as HTMLInputElement;
-      input?.blur();
+    blur() {
+      (this.$refs.inputRef as HTMLInputElement).blur();
     },
     handleKeydown(e: KeyboardEvent) {
       if (this.tDisabled) return;
@@ -268,6 +286,7 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
       if (this.composingRef) {
         this.composingRefValue = val;
       } else {
+        val = limitUnicodeMaxLength(val, this.maxlength);
         if (this.maxcharacter && this.maxcharacter >= 0) {
           const stringInfo = getCharacterLength(val, this.maxcharacter);
           val = typeof stringInfo === 'object' && stringInfo.characters;
@@ -318,12 +337,19 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
 
     const prefixIcon = this.renderIcon(h, this.prefixIcon, 'prefix-icon');
     let suffixIcon = this.renderIcon(h, this.suffixIcon, 'suffix-icon');
+    let passwordIcon = this.renderIcon(h, undefined, 'password-icon');
 
     const label = renderTNodeJSX(this, 'label');
     const suffix = renderTNodeJSX(this, 'suffix');
 
     const labelContent = label ? <div class={`${this.componentName}__prefix`}>{label}</div> : null;
     const suffixContent = suffix ? <div class={`${this.componentName}__suffix`}>{suffix}</div> : null;
+
+    const { BrowseIcon, BrowseOffIcon, CloseCircleFilledIcon } = this.useGlobalIcon({
+      BrowseIcon: TdBrowseIcon,
+      BrowseOffIcon: TdBrowseOffIcon,
+      CloseCircleFilledIcon: TdCloseCircleFilledIcon,
+    });
 
     if (this.type === 'password') {
       if (this.renderType === 'password') {
@@ -334,9 +360,16 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
     }
 
     if (this.showClear) {
-      suffixIcon = (
-        <CloseCircleFilledIcon class={`${this.componentName}__suffix-clear`} nativeOnClick={this.emitClear} />
-      );
+      // 如果类型为 password 则使用 passwordIcon 显示 clear
+      if (this.type === 'password') {
+        passwordIcon = (
+          <CloseCircleFilledIcon class={`${this.componentName}__suffix-clear`} nativeOnClick={this.emitClear} />
+        );
+      } else {
+        suffixIcon = (
+          <CloseCircleFilledIcon class={`${this.componentName}__suffix-clear`} nativeOnClick={this.emitClear} />
+        );
+      }
     }
 
     const classes = [
@@ -377,6 +410,17 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
           </span>
         )}
         {suffixContent}
+        {passwordIcon ? (
+          <span
+            class={[
+              `${this.componentName}__suffix`,
+              `${this.componentName}__suffix-icon`,
+              `${this.componentName}__clear`,
+            ]}
+          >
+            {passwordIcon}
+          </span>
+        ) : null}
         {suffixIcon ? (
           <span
             class={[
@@ -392,14 +436,11 @@ export default mixins(getConfigReceiverMixins<InputInstance, InputConfig>('input
     );
 
     const tips = renderTNodeJSX(this, 'tips');
+
     return (
-      <div class={`${this.componentName}__wrap`}>
+      <div class={this.inputWrapClass}>
         {inputNode}
-        {tips && (
-          <div class={`${this.componentName}__tips ${this.componentName}__tips--${this.status || 'normal'}`}>
-            {tips}
-          </div>
-        )}
+        {tips && <div class={`${this.componentName}__tips ${this.componentName}__tips--${this.status}`}>{tips}</div>}
       </div>
     );
   },
