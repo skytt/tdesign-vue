@@ -5,6 +5,70 @@ toc: false
 docClass: timeline
 ---
 
+## 🌈 0.49.3 `2022-11-02` 
+### 🚀 Features
+- `Input`:  @chaishi ([#1700](https://github.com/Tencent/tdesign-vue/pull/1700))
+  - 支持在输入框实时显示数字限制
+  - 支持对 `unicode` 字符长度的判定
+  - `status` 为空时，不再添加无效类名 `t-is-default`
+- `Upload`: 文件列表上传支持使用 `fileListDisplay` 自定义文件列表 @chaishi ([#1704](https://github.com/Tencent/tdesign-vue/pull/1704))
+- `Pagination`: 透传`selectProps` 和 `selectProps.popupProps` 到组件 `Pagination`，以便实现挂载节点等复杂场景需求， [tdesign-react#1611](https://github.com/Tencent/tdesign-react/issues/1611) @chaishi ([#1702](https://github.com/Tencent/tdesign-vue/pull/1702))
+- `TimePicker`: 新增`onPick` API 用于每次选中面板值进行回调处理 @uyarn ([#1728](https://github.com/Tencent/tdesign-vue/pull/1728))
+- `ConfigReceiver`: `getKeepAnimationMixins` 支持读取 `defaultGlobalConfig` @qqw78901 ([#1699](https://github.com/Tencent/tdesign-vue/pull/1699))
+- 支持局部注册组件时，不再需要手动引入 `Composition-API` @qqw78901 ([#1697](https://github.com/Tencent/tdesign-vue/pull/1697))
+### 🐞 Bug Fixes
+- `Table`: @chaishi ([#1702](https://github.com/Tencent/tdesign-vue/pull/1702))
+  - EnchancedTable 支持可编辑单元格，[issue#1689](https://github.com/Tencent/tdesign-vue/issues/1689)
+  - 修复吸顶表头超出省略问题，[issue#1639](https://github.com/Tencent/tdesign-vue/issues/1639)
+  - 提高 `dragSortOptions` 优先级，以便父组件自定义全部参数，[tdesign-react#1556](https://github.com/Tencent/tdesign-react/issues/1556)
+  - 修复表格可编辑单元格的验证错误不能被正常清除问题，[issue#1637](https://github.com/Tencent/tdesign-vue/issues/1637)
+  - 本地分页表格中，使用拖拽排序，数据交换结果不正确，[issue#1342](https://github.com/Tencent/tdesign-vue/issues/1342)
+- `Dialog`: 修复参数 `footer = false` 时，footer 节点仍然渲染的问题 @huangpiqiao ([#1713](https://github.com/Tencent/tdesign-vue/pull/1713))
+- `Datepicker`:
+  - 修复 `popupProps.onVisibleChange` 方法不能正常触发的问题 @xiaosansiji ([#1712](https://github.com/Tencent/tdesign-vue/pull/1712))
+  - 修复单选日期时间无法保存的问题 @HQ-Lin ([#1716](https://github.com/Tencent/tdesign-vue/pull/1716))
+- `Collapse`: 修复`ExpandIcon`的实现 @asbstty ([#1717](https://github.com/Tencent/tdesign-vue/pull/1717))
+- `Calendar`: 调整日历组件单元格外层 `DOM` 样式，修复在使用 `cellAppend` 插槽后可能样式会有异常的问题 @PsTiu ([#1721](https://github.com/Tencent/tdesign-vue/pull/1721))
+- `Textarea`:  修复`status`的类型问题 @yaogengzhu ([#1710](https://github.com/Tencent/tdesign-vue/pull/1710))
+- `TimePicker`: 修复12小时制时分的显示异常 @uyarn ([#1728](https://github.com/Tencent/tdesign-vue/pull/1728))
+- `Dropdown`: 修复下拉菜单可视无法完全受控的问题 @uyarn ([#1729](https://github.com/Tencent/tdesign-vue/pull/1729))
+- `Checkbox`: 修复Checkbox的options 参数属性变化时未重新渲染的问题 @uyarn ([#1730](https://github.com/Tencent/tdesign-vue/pull/1730))
+### 🚧 Others
+- `Tooltip/popup`: 新增测试用例 @byq1213 ([#1688](https://github.com/Tencent/tdesign-vue/pull/1688))
+- `Test`: 测试方案由 Jest 切换到 Vitest @xiaosansiji ([#1687](https://github.com/Tencent/tdesign-vue/pull/1687))
+
+## 🌈 0.49.2 `2022-10-27` 
+### 🐞 Bug Fixes
+- `Select`
+    - 修复单选清除失效的问题 @uyarn ([#1690](https://github.com/Tencent/tdesign-vue/pull/1690))
+    - 修复分组样式问题 @uyarn ([#1690](https://github.com/Tencent/tdesign-vue/pull/1690))
+- `TreeSelect`: 修复0.49.1版本样式丢失的异常 @uyarn ([common#934](https://github.com/Tencent/tdesign-common/pull/934))
+
+## 🌈 0.49.1 `2022-10-26` 
+### 🚀 Features
+- `Select`:
+  - `onChange` 事件增加 option 参数返回 [issue#1664](https://github.com/Tencent/tdesign-vue/issues/1664) @skytt ([#1667](https://github.com/Tencent/tdesign-vue/pull/1667))
+  - 添加 options 参数监听, 优化部分场景下 option 更新逻辑 [issue#1681](https://github.com/Tencent/tdesign-vue/issues/1681) @skytt ([#1682](https://github.com/Tencent/tdesign-vue/pull/1682))
+- `Upload`: 多图片上传，图片文件名支持 `abridgeName` @chaishi ([#1669](https://github.com/Tencent/tdesign-vue/pull/1669))
+- `dialog`:  优化非模态对话框拖拽事件鼠标表现  @huoyuhao ([#1352](https://github.com/Tencent/tdesign-vue/pull/1352))
+### 🐞 Bug Fixes
+- `Select`: 空值兼容 null 的情况 [issue#1668](https://github.com/Tencent/tdesign-vue/issues/1668) @skytt ([#1667](https://github.com/Tencent/tdesign-vue/pull/1667))
+- `Upload`: @chaishi ([#1669](https://github.com/Tencent/tdesign-vue/pull/1669))
+  - 修复 `name` 无效的问题
+  - 修复自定义上传方法不支持图片回显的问题
+- `Collapse`: 修复点击标题没有触发折叠功能的问题 @huangpiqiao ([#1676](https://github.com/Tencent/tdesign-vue/pull/1676))
+- `Tabs`: 修复 Tabs 切换时会导致表单初始化聚焦失效问题 @huangpiqiao ([#1676](https://github.com/Tencent/tdesign-vue/pull/1676))
+- `Datepicker`: @luwuer ([#1587](https://github.com/Tencent/tdesign-vue/pull/1587))
+  - 修复 `t-date-picker__cell--active-start` 和 `t-date-picker__cell--active-end` 在第二次操作时错序的问题 [issue#1580](https://github.com/Tencent/tdesign-vue/issues/1580)
+  - 修复 hover 已选择日期动画导致 cell 闪烁问题 @luwuer ([#1587](https://github.com/Tencent/tdesign-vue/pull/1587))
+- `Textarea`: 修复禁用状态字数限制区域的样式问题 @uyarn ([#1684](https://github.com/Tencent/tdesign-vue/pull/1684))
+- `Space`: 修复子节点为空的报错 @uyarn ([#1684](https://github.com/Tencent/tdesign-vue/pull/1684))
+- `Dialog`: 修复 theme 为非 default 时 body 节点类名的问题 @uyarn ([#1684](https://github.com/Tencent/tdesign-vue/pull/1684))
+### 🚧 Others
+- `Popconfirm`: 修复官网 demo 气泡框描述文案字体颜色 @iLunZ ([#1677](https://github.com/Tencent/tdesign-vue/pull/1677))
+- 官网: 主题生成器新增阴影配置能力 @uyarn @yilaierwang ([#1655](https://github.com/Tencent/tdesign-vue/pull/1655))
+- `Avatar`: demo 中删除重复头像并调整展示顺序 @tutaizi ([#1612](https://github.com/Tencent/tdesign-vue/pull/1612))
+
 ## 🌈 0.49.0 `2022-10-19` 
 ### ❗ Breaking Changes
 - `Dropdown`: 调整`Dropdown`样式，优化多层菜单样式结构，多层菜单结构有变动 @uyarn ([#1607](https://github.com/Tencent/tdesign-vue/pull/1607))
